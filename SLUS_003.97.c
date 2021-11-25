@@ -8,6 +8,7 @@ typedef unsigned long    ulong;
 typedef unsigned char    undefined1;
 typedef unsigned short    undefined2;
 typedef unsigned int    undefined4;
+typedef unsigned long long    undefined8;
 typedef unsigned short    ushort;
 typedef unsigned short    word;
 typedef ulong u_long;
@@ -897,14 +898,14 @@ void main(void)
   undefined4 *puVar9;
   
   __main();
-  GsInitGraph(0x140,0xf0,0,1,0);
-  FUN_80039140(&DAT_801fffe0);
+  GsInitGraph(320,240,0,1,0);
+  SetSp(&oldSp);
   SetMemSize(2);
   ResetCallback();
   CdInit();
   ResetGraph(0);
   SetGraphDebug(0);
-  InitPAD(&DAT_80063594,0x22,&DAT_800636d0,0x22);
+  InitPAD(&pad1,34,&pad2,34);
   StartPAD();
   iVar6 = 0;
   puVar9 = &DAT_800632a0;
@@ -982,54 +983,55 @@ void main(void)
     iVar6 = iVar6 + -1;
     puVar7 = puVar7 + -1;
   } while (-1 < iVar6);
-  FUN_80014e38(&PTR_s__OVERLAYS_LS_BLK_1_80039998,1);
-  FUN_80014534(&DAT_80065ee4,0x5e,0x2f,0);
-  FUN_800149d8();
-  VSyncCallback(FUN_8001436c);
+  findFileOnCD(&PTR_s__OVERLAYS_LS_BLK_1_80039998,1);
+  FUN_80014534(&DAT_80065ee4,94,47,0);
+  legalScreens();
+  VSyncCallback(cb_vsync);
   VSync(-1);
-  FUN_80014cb8();
+  cacheFileLookups();
   FUN_80017150(&DAT_80065ee4);
   VSync(1);
   FUN_80017300(&DAT_80065ee4);
-  FUN_80017314(0);
+  playMovie(0);
   DAT_80063254 = 5;
   do {
-    FUN_80039140(&DAT_801fffe0);
+    SetSp(&oldSp);
     if (DAT_80063254 == 5) {
       FUN_800182bc();
-      SsSetSerialAttr('\0','\0','\x01');
-      SsSetSerialVol('\0',DAT_80063234,DAT_80063234);
+      SsSetSerialAttr(SS_SERIAL_A,SS_MIX,SS_SON);
+      SsSetSerialVol(SS_SERIAL_A,DAT_80063234,DAT_80063234);
       FUN_800186c0(_DAT_80063234);
       FUN_80017300(&DAT_80065ee4);
-      FUN_80017314(1);
+      playMovie(1);
       DAT_80063254 = 0;
     }
-    FUN_80014534(&DAT_80065ee4,0xa0,0xa0,1);
-    VSyncCallback(FUN_8001436c);
+    FUN_80014534(&DAT_80065ee4,160,160,1);
+    VSyncCallback(cb_vsync);
     DAT_80039958 = &UNK_801feffc;
-    FUN_80014d30(&PTR_s__WMENU_BIN_1_80039950);
+                    // Start menu stuff
+    FUN_80014d30(&wmenu_bin);
     FUN_8001726c(DAT_80039958,&DAT_80065ee4);
-    FUN_80039150();
+    SwEnterCriticalSection();
     FlushCache();
-    FUN_80039170();
-    FUN_8006a39c();
+    SwExitCriticalSection();
+    initMenu();
     FUN_8001474c(&DAT_80065ee4);
     DAT_8003997c = &UNK_801feffc;
-    FUN_80014d30(&PTR_s__WGAME_BIN_1_80039974);
+    FUN_80014d30(&wgame_bin);
     FUN_8001726c(DAT_8003997c,&DAT_80065ee4);
-    FUN_80039150();
+    SwEnterCriticalSection();
     FlushCache();
-    FUN_80039170();
-    FUN_80066804();
+    SwExitCriticalSection();
+    initGame();
     DAT_80054d04 = 0;
     ResetGraph(1);
-    GsInitGraph(0x140,0xf0,0,1,0);
+    GsInitGraph(320,240,0,1,0);
   } while( true );
 }
 
 
 
-void FUN_8001436c(void)
+void cb_vsync(void)
 
 {
   short sVar1;
@@ -1051,87 +1053,87 @@ void FUN_8001436c(void)
     DAT_80054d8c = 0;
     DAT_80054d40 = 0;
   }
-  DAT_80063ae6 = 0x10;
-  DAT_80063ade = 0x3fc0;
-  DAT_80063ad4 = 0x7f;
-  DAT_80063ad5 = 0x7f;
-  DAT_80063ad6 = 0x7f;
+  quad_poly.tpage = 0x10;
+  quad_poly.clut = 0x3fc0;
+  quad_poly.r0 = '\x7f';
+  quad_poly.g0 = '\x7f';
+  quad_poly.b0 = '\x7f';
   sVar1 = (short)(DAT_80054d64 / 2);
-  DAT_80063ad8 = (short)DAT_80054d68 - sVar1;
-  DAT_80063ae0 = (short)DAT_80054d68 + sVar1;
+  quad_poly.x0 = (short)DAT_80054d68 - sVar1;
+  quad_poly.x1 = (short)DAT_80054d68 + sVar1;
   sVar1 = (short)(DAT_80054d74 / 2);
-  DAT_80063ada = (short)DAT_80054d6c - sVar1;
-  DAT_80063aea = (short)DAT_80054d6c + sVar1;
-  DAT_80063ae4 = (char)DAT_80054d8c + (char)DAT_80054d64 + -1;
-  DAT_80063aec = (char)DAT_80054d8c;
-  DAT_80063adc = (char)DAT_80054d8c;
+  quad_poly.y0 = (short)DAT_80054d6c - sVar1;
+  quad_poly.y2 = (short)DAT_80054d6c + sVar1;
+  quad_poly.u1 = (u_char)DAT_80054d8c + (char)DAT_80054d64 + 0xff;
+  quad_poly.u2 = (u_char)DAT_80054d8c;
+  quad_poly.u0 = (u_char)DAT_80054d8c;
   cVar2 = (char)DAT_80054d94 + (char)(DAT_80054d50 / 2);
   cVar3 = (char)(DAT_80054d74 / 2);
-  DAT_80063add = cVar2 - cVar3;
-  DAT_80063aed = cVar2 + cVar3;
-  DAT_80063ae2 = DAT_80063ada;
-  DAT_80063ae5 = DAT_80063add;
-  DAT_80063ae8 = DAT_80063ad8;
-  DAT_80063af0 = DAT_80063ae0;
-  DAT_80063af2 = DAT_80063aea;
-  DAT_80063af4 = DAT_80063ae4;
-  DAT_80063af5 = DAT_80063aed;
+  quad_poly._2 = cVar2 - cVar3;
+  quad_poly.v2 = cVar2 + cVar3;
+  quad_poly.y1 = quad_poly.y0;
+  quad_poly._3 = quad_poly._2;
+  quad_poly.x2 = quad_poly.x0;
+  quad_poly.x3 = quad_poly.x1;
+  quad_poly.y3 = quad_poly.y2;
+  quad_poly.u3 = quad_poly.u1;
+  quad_poly.v3 = quad_poly.v2;
   DrawSync(0);
-  DrawPrim(&DAT_80063ad0);
+  DrawPrim(&quad_poly);
   return;
 }
 
 
 
-void FUN_80014534(u_long *param_1,undefined4 param_2,undefined4 param_3,int param_4)
+void FUN_80014534(u_long *source,undefined4 param_2,undefined4 param_3,int param_4)
 
 {
-  RECT local_20;
+  RECT dest;
   
-  FUN_80017150();
-  FUN_80025400(0,0,0,0);
+  FUN_80017150(source);
+  GsDefDispBuff(0,0,0,0);
   DrawSync(0);
   ResetGraph(1);
   GsSwapDispBuff();
-  DAT_800399a0 = param_1;
+  DAT_800399a0 = source;
   FUN_80014d30(&PTR_s__OVERLAYS_LS_BLK_1_80039998);
-  local_20.y = 0xfe;
-  local_20.w = 0x90;
-  local_20.x = 0;
-  local_20.h = 0x102;
-  LoadImage(&local_20,param_1);
+  dest.y = 254;
+  dest.w = 144;
+  dest.x = 0;
+  dest.h = 258;
+  LoadImage(&dest,source);
   if (param_4 != 0) {
-    DAT_80063ae6 = 0x11;
-    DAT_80063ade = 0x3f80;
-    DAT_80063af2 = 0xef;
-    DAT_80063aea = 0xef;
-    DAT_80063af4 = 0xff;
-    DAT_80063ae4 = 0xff;
-    DAT_80063af5 = 0xef;
-    DAT_80063aed = 0xef;
-    DAT_80063ae8 = 0;
-    DAT_80063ad8 = 0;
-    DAT_80063af0 = 0x100;
-    DAT_80063ae0 = 0x100;
-    DAT_80063ae2 = 0;
-    DAT_80063ada = 0;
-    DAT_80063aec = 0;
-    DAT_80063adc = 0;
-    DAT_80063ae5 = 0;
-    DAT_80063add = 0;
-    DAT_80063ad4 = 0x7f;
-    DAT_80063ad5 = 0x7f;
-    DAT_80063ad6 = 0x7f;
-    DrawPrim(&DAT_80063ad0);
+    quad_poly.tpage = 0x11;
+    quad_poly.clut = 0x3f80;
+    quad_poly.y3 = 0xef;
+    quad_poly.y2 = 0xef;
+    quad_poly.u3 = 0xff;
+    quad_poly.u1 = 0xff;
+    quad_poly.v3 = 0xef;
+    quad_poly.v2 = 0xef;
+    quad_poly.x2 = 0;
+    quad_poly.x0 = 0;
+    quad_poly.x3 = 0x100;
+    quad_poly.x1 = 0x100;
+    quad_poly.y1 = 0;
+    quad_poly.y0 = 0;
+    quad_poly.u2 = '\0';
+    quad_poly.u0 = '\0';
+    quad_poly._3 = '\0';
+    quad_poly._2 = '\0';
+    quad_poly.r0 = '\x7f';
+    quad_poly.g0 = '\x7f';
+    quad_poly.b0 = '\x7f';
+    DrawPrim(&quad_poly);
     DrawSync(0);
-    DAT_80063ae6 = 0x12;
-    DAT_80063af0 = 0x13f;
-    DAT_80063ae0 = 0x13f;
-    DAT_80063ae8 = 0x100;
-    DAT_80063ad8 = 0x100;
-    DAT_80063af4 = 0x40;
-    DAT_80063ae4 = 0x40;
-    DrawPrim(&DAT_80063ad0);
+    quad_poly.tpage = 0x12;
+    quad_poly.x3 = 0x13f;
+    quad_poly.x1 = 0x13f;
+    quad_poly.x2 = 0x100;
+    quad_poly.x0 = 0x100;
+    quad_poly.u3 = '@';
+    quad_poly.u1 = '@';
+    DrawPrim(&quad_poly);
     DrawSync(0);
   }
   DAT_80054d50 = 0x20;
@@ -1139,7 +1141,7 @@ void FUN_80014534(u_long *param_1,undefined4 param_2,undefined4 param_3,int para
   DAT_80054d74 = 0x10;
   DAT_80054d68 = param_2;
   DAT_80054d6c = param_3;
-  SetPolyFT4((POLY_FT4 *)&DAT_80063ad0);
+  SetPolyFT4(&quad_poly);
   return;
 }
 
@@ -1147,148 +1149,148 @@ void FUN_80014534(u_long *param_1,undefined4 param_2,undefined4 param_3,int para
 
 // WARNING: Removing unreachable block (ram,0x800147cc)
 
-void FUN_8001474c(int param_1)
+void FUN_8001474c(u_long *source)
 
 {
   int iVar1;
-  RECT local_38;
-  GsIMAGE GStack48;
+  RECT recp;
+  GsIMAGE image;
   
-  FUN_80025400(0,0,0,0);
+  GsDefDispBuff(0,0,0,0);
   DrawSync(0);
   ResetGraph(1);
   GsSwapDispBuff();
-  FUN_80014534(param_1,0x24,0x1f,0);
+  FUN_80014534(source,36,31,0);
   if (DAT_80063254 == 0) {
     iVar1 = 0;
   }
   else {
-    iVar1 = 0x10;
+    iVar1 = 16;
   }
-  (&DAT_80039958)[(iVar1 + 3) * 9] = param_1;
+  (&DAT_80039958)[(iVar1 + 3) * 9] = source;
   FUN_80014d30(&PTR_s__OVERLAYS_LS_BLK_1_80039998 + (iVar1 + 1) * 9);
-  GsGetTimInfo((ulong *)(param_1 + 4),&GStack48);
-  local_38.x = 0x40;
-  local_38.w = 0xa0;
-  local_38.y = 0x100;
-  local_38.h = 0xf0;
-  LoadImage(&local_38,GStack48.pixel);
-  local_38.y = 0xfe;
-  local_38.x = 0;
-  local_38.w = 0x100;
-  local_38.h = 1;
-  LoadImage(&local_38,GStack48.clut);
-  SetPolyFT4((POLY_FT4 *)&DAT_80063ad0);
-  DAT_80063ae6 = 0x91;
-  DAT_80063ade = 0x3f80;
-  DAT_80063af2 = 0xef;
-  DAT_80063aea = 0xef;
-  DAT_80063af4 = 0xff;
-  DAT_80063ae4 = 0xff;
-  DAT_80063af5 = 0xef;
-  DAT_80063aed = 0xef;
-  DAT_80063ae8 = 0;
-  DAT_80063ad8 = 0;
-  DAT_80063af0 = 0x100;
-  DAT_80063ae0 = 0x100;
-  DAT_80063ae2 = 0;
-  DAT_80063ada = 0;
-  DAT_80063aec = 0;
-  DAT_80063adc = 0;
-  DAT_80063ae5 = 0;
-  DAT_80063add = 0;
-  DAT_80063ad4 = 0x7f;
-  DAT_80063ad5 = 0x7f;
-  DAT_80063ad6 = 0x7f;
+  GsGetTimInfo(source + 1,&image);
+  recp.x = 64;
+  recp.w = 160;
+  recp.y = 256;
+  recp.h = 240;
+  LoadImage(&recp,image.pixel);
+  recp.y = 254;
+  recp.x = 0;
+  recp.w = 256;
+  recp.h = 1;
+  LoadImage(&recp,image.clut);
+  SetPolyFT4(&quad_poly);
+  quad_poly.tpage = 0x91;
+  quad_poly.clut = 0x3f80;
+  quad_poly.y3 = 0xef;
+  quad_poly.y2 = 0xef;
+  quad_poly.u3 = 0xff;
+  quad_poly.u1 = 0xff;
+  quad_poly.v3 = 0xef;
+  quad_poly.v2 = 0xef;
+  quad_poly.x2 = 0;
+  quad_poly.x0 = 0;
+  quad_poly.x3 = 256;
+  quad_poly.x1 = 256;
+  quad_poly.y1 = 0;
+  quad_poly.y0 = 0;
+  quad_poly.u2 = '\0';
+  quad_poly.u0 = '\0';
+  quad_poly._3 = '\0';
+  quad_poly._2 = '\0';
+  quad_poly.r0 = '\x7f';
+  quad_poly.g0 = '\x7f';
+  quad_poly.b0 = '\x7f';
   VSync(1);
-  DrawPrim(&DAT_80063ad0);
+  DrawPrim(&quad_poly);
   DrawSync(0);
-  DAT_80063ae6 = 0x93;
-  DAT_80063af0 = 0x13f;
-  DAT_80063ae0 = 0x13f;
-  DAT_80063ae8 = 0x100;
-  DAT_80063ad8 = 0x100;
-  DAT_80063af4 = 0x40;
-  DAT_80063ae4 = 0x40;
-  DrawPrim(&DAT_80063ad0);
+  quad_poly.tpage = 0x93;
+  quad_poly.x3 = 0x13f;
+  quad_poly.x1 = 0x13f;
+  quad_poly.x2 = 256;
+  quad_poly.x0 = 256;
+  quad_poly.u3 = '@';
+  quad_poly.u1 = '@';
+  DrawPrim(&quad_poly);
   DrawSync(0);
   VSync(1);
-  VSyncCallback(FUN_8001436c);
+  VSyncCallback(cb_vsync);
   return;
 }
 
 
 
-void FUN_800149d8(void)
+void legalScreens(void)
 
 {
-  RECT local_40;
-  GsIMAGE GStack56;
+  RECT recp;
+  GsIMAGE image;
   
-  FUN_80025400(0,0,0,0);
+  GsDefDispBuff(0,0,0,0);
   DrawSync(0);
   ResetGraph(1);
   GsSwapDispBuff();
   DAT_80039c70 = &DAT_8007e584;
-  FUN_80014e38(&PTR_s__SCREENS_LEGAL_DAT_1_80039c68,1);
-  FUN_80014ee0(&PTR_s__SCREENS_LEGAL_DAT_1_80039c68,1);
+  findFileOnCD(&screens_legal_dat,1);
+  readFileFromCD(&screens_legal_dat,1);
   FUN_8001726c(DAT_80039c70,&DAT_80065ee4);
-  GsGetTimInfo(&DAT_80065ee8,&GStack56);
-  local_40.x = 0x40;
-  local_40.w = 0x50;
-  local_40.y = 0x100;
-  local_40.h = 0xf0;
-  LoadImage(&local_40,GStack56.pixel);
-  local_40.y = 0xfe;
-  local_40.x = 0;
-  local_40.w = 0x100;
-  local_40.h = 1;
-  LoadImage(&local_40,GStack56.clut);
-  SetPolyFT4((POLY_FT4 *)&DAT_80063ad0);
-  DAT_80063ade = 0x3f80;
-  DAT_80063af2 = 0xef;
-  DAT_80063aea = 0xef;
-  DAT_80063af5 = 0xef;
-  DAT_80063aed = 0xef;
-  DAT_80063ae6 = 0x11;
-  DAT_80063ae8 = 0;
-  DAT_80063ad8 = 0;
-  DAT_80063af0 = 0xff;
-  DAT_80063ae0 = 0xff;
-  DAT_80063ae2 = 0;
-  DAT_80063ada = 0;
-  DAT_80063aec = 0;
-  DAT_80063adc = 0;
-  DAT_80063af4 = 0xff;
-  DAT_80063ae4 = 0xff;
-  DAT_80063ae5 = 0;
-  DAT_80063add = 0;
-  DAT_80063ad4 = 0x7f;
-  DAT_80063ad5 = 0x7f;
-  DAT_80063ad6 = 0x7f;
+  GsGetTimInfo(&someTim,&image);
+  recp.x = 64;
+  recp.w = 80;
+  recp.y = 256;
+  recp.h = 240;
+  LoadImage(&recp,image.pixel);
+  recp.y = 254;
+  recp.x = 0;
+  recp.w = 256;
+  recp.h = 1;
+  LoadImage(&recp,image.clut);
+  SetPolyFT4(&quad_poly);
+  quad_poly.clut = 0x3f80;
+  quad_poly.y3 = 0xef;
+  quad_poly.y2 = 0xef;
+  quad_poly.v3 = 0xef;
+  quad_poly.v2 = 0xef;
+  quad_poly.tpage = 0x11;
+  quad_poly.x2 = 0;
+  quad_poly.x0 = 0;
+  quad_poly.x3 = 0xff;
+  quad_poly.x1 = 0xff;
+  quad_poly.y1 = 0;
+  quad_poly.y0 = 0;
+  quad_poly.u2 = '\0';
+  quad_poly.u0 = '\0';
+  quad_poly.u3 = 0xff;
+  quad_poly.u1 = 0xff;
+  quad_poly._3 = '\0';
+  quad_poly._2 = '\0';
+  quad_poly.r0 = '\x7f';
+  quad_poly.g0 = '\x7f';
+  quad_poly.b0 = '\x7f';
   VSync(1);
-  DrawPrim(&DAT_80063ad0);
+  DrawPrim(&quad_poly);
   DrawSync(0);
-  DAT_80063ae6 = 0x12;
-  DAT_80063af0 = 0x13f;
-  DAT_80063ae0 = 0x13f;
-  DAT_80063ae8 = 0x100;
-  DAT_80063ad8 = 0x100;
-  DAT_80063af4 = 0x40;
-  DAT_80063ae4 = 0x40;
-  DrawPrim(&DAT_80063ad0);
+  quad_poly.tpage = 0x12;
+  quad_poly.x3 = 0x13f;
+  quad_poly.x1 = 0x13f;
+  quad_poly.x2 = 0x100;
+  quad_poly.x0 = 0x100;
+  quad_poly.u3 = '@';
+  quad_poly.u1 = '@';
+  DrawPrim(&quad_poly);
   DrawSync(0);
   VSync(1);
-  DAT_80063ae6 = 0x11;
-  DAT_80063ae8 = 0xff;
-  DAT_80063ad8 = 0xff;
-  DAT_80063af0 = 0x100;
-  DAT_80063ae0 = 0x100;
-  DAT_80063af4 = 0xff;
-  DAT_80063aec = 0xff;
-  DAT_80063ae4 = 0xff;
-  DAT_80063adc = 0xff;
-  DrawPrim(&DAT_80063ad0);
+  quad_poly.tpage = 0x11;
+  quad_poly.x2 = 0xff;
+  quad_poly.x0 = 0xff;
+  quad_poly.x3 = 0x100;
+  quad_poly.x1 = 0x100;
+  quad_poly.u3 = 0xff;
+  quad_poly.u2 = 0xff;
+  quad_poly.u1 = 0xff;
+  quad_poly.u0 = 0xff;
+  DrawPrim(&quad_poly);
   DrawSync(0);
   VSync(1);
   return;
@@ -1308,16 +1310,16 @@ void SpuInit(void)
 
 
 
-void FUN_80014cb8(void)
+void cacheFileLookups(void)
 
 {
   undefined **ppuVar1;
   uint uVar2;
   
   uVar2 = 0;
-  ppuVar1 = &PTR_s__WMENU_BIN_1_80039950;
+  ppuVar1 = &wmenu_bin;
   do {
-    FUN_80014e38(ppuVar1,1);
+    findFileOnCD(ppuVar1,1);
     uVar2 = uVar2 + 1;
     ppuVar1 = ppuVar1 + 9;
   } while (uVar2 < 0xfe);
@@ -1335,81 +1337,81 @@ void FUN_80014d08(int param_1)
 
 
 
-void FUN_80014d30(char **param_1)
+void FUN_80014d30(char **file)
 
 {
   bool bVar1;
-  int iVar2;
+  int result;
+  char *pcVar2;
   char *pcVar3;
   char *pcVar4;
-  char *pcVar5;
-  int iVar6;
-  uint uVar7;
-  char **ppcVar8;
+  int iVar5;
+  uint uVar6;
+  char **ppcVar7;
   
   bVar1 = false;
-  uVar7 = 0;
-  ppcVar8 = (char **)&DAT_8003995c;
-  iVar6 = 0;
+  uVar6 = 0;
+  ppcVar7 = (char **)&DAT_8003995c;
+  iVar5 = 0;
   do {
-    iVar2 = strcmp(*(char **)((int)&PTR_s__WMENU_BIN_1_80039950 + iVar6),*param_1);
-    if (iVar2 == 0) {
-      pcVar3 = ppcVar8[1];
-      pcVar4 = ppcVar8[2];
-      pcVar5 = ppcVar8[3];
-      param_1[3] = *ppcVar8;
-      param_1[4] = pcVar3;
-      param_1[5] = pcVar4;
-      param_1[6] = pcVar5;
-      pcVar3 = ppcVar8[5];
-      param_1[7] = ppcVar8[4];
-      param_1[8] = pcVar3;
+    result = strcmp(*(char **)((int)&wmenu_bin + iVar5),*file);
+    if (result == 0) {
+      pcVar2 = ppcVar7[1];
+      pcVar3 = ppcVar7[2];
+      pcVar4 = ppcVar7[3];
+      file[3] = *ppcVar7;
+      file[4] = pcVar2;
+      file[5] = pcVar3;
+      file[6] = pcVar4;
+      pcVar2 = ppcVar7[5];
+      file[7] = ppcVar7[4];
+      file[8] = pcVar2;
       bVar1 = true;
-      printf("Found %s in the quick table.\n",*param_1);
+      printf("Found %s in the quick table.\n",*file);
       break;
     }
-    ppcVar8 = ppcVar8 + 9;
-    uVar7 = uVar7 + 1;
-    iVar6 = iVar6 + 0x24;
-  } while (uVar7 < 0xfe);
+    ppcVar7 = ppcVar7 + 9;
+    uVar6 = uVar6 + 1;
+    iVar5 = iVar5 + 0x24;
+  } while (uVar6 < 0xfe);
   if (!bVar1) {
-    FUN_80014e38(param_1,1);
-    printf("DID NOT FIND %s in the quick table.\n",*param_1);
+    findFileOnCD(file,1);
+    printf("DID NOT FIND %s in the quick table.\n",*file);
   }
-  FUN_80014ee0(param_1,1);
+  readFileFromCD(file,1);
   return;
 }
 
 
 
-void FUN_80014e38(int param_1,int param_2)
+void findFileOnCD(int file,int param_2)
 
 {
-  CdlFILE *pCVar1;
-  int iVar2;
-  char **ppcVar3;
-  int iVar4;
+  CdlFILE *result;
+  int iVar1;
+  char **ppcVar2;
+  int iVar3;
   
-  iVar4 = 0;
+  iVar3 = 0;
   if (0 < param_2) {
-    iVar2 = 0;
+    iVar1 = 0;
     do {
-      ppcVar3 = (char **)(param_1 + (iVar2 >> 0x10) * 0x24);
-      pCVar1 = CdSearchFile((CdlFILE *)(ppcVar3 + 3),*ppcVar3);
-      iVar4 = iVar4 + 1;
-      if (pCVar1 == (CdlFILE *)0x0) {
-        printf("Can\'t find file: %s \n",*ppcVar3);
+      ppcVar2 = (char **)(file + (iVar1 >> 0x10) * 0x24);
+      result = CdSearchFile((CdlFILE *)(ppcVar2 + 3),*ppcVar2);
+      iVar3 = iVar3 + 1;
+      if (result == (CdlFILE *)0x0) {
+        printf("Can\'t find file: %s \n",*ppcVar2);
         return;
       }
-      iVar2 = iVar4 * 0x10000;
-    } while (iVar4 * 0x10000 >> 0x10 < param_2);
+      iVar1 = iVar3 * 0x10000;
+    } while (iVar3 * 0x10000 >> 0x10 < param_2);
   }
   return;
 }
 
 
 
-void FUN_80014ee0(int param_1,int param_2)
+void readFileFromCD(int param_1,int param_2)
 
 {
   int iVar1;
@@ -1502,10 +1504,10 @@ uint FUN_80015270(void)
   uint uVar1;
   
   uVar1 = ~CONCAT13(DAT_800636d2,CONCAT12(DAT_800636d3,CONCAT11(DAT_80063596,DAT_80063597)));
-  if (DAT_80063594 == -1) {
+  if (pad1 == -1) {
     uVar1 = uVar1 & 0xffff0000;
   }
-  if (DAT_800636d0 == -1) {
+  if (pad2 == -1) {
     uVar1 = uVar1 & 0xffff;
   }
   return uVar1;
@@ -1521,17 +1523,17 @@ undefined4 FUN_80015314(int param_1)
   uVar1 = 1;
   if (param_1 == 0) {
     uVar1 = 0xff;
-    if (DAT_80063594 == '\0') {
+    if (pad1 == '\0') {
       uVar1 = 1;
     }
     else {
-      if (DAT_80063594 == -1) {
+      if (pad1 == -1) {
         uVar1 = 0;
       }
     }
   }
   else {
-    if (((param_1 == 1) && (DAT_800636d0 != '\0')) && (uVar1 = 0xff, DAT_800636d0 == -1)) {
+    if (((param_1 == 1) && (pad2 != '\0')) && (uVar1 = 0xff, pad2 == -1)) {
       uVar1 = 0;
     }
   }
@@ -2479,32 +2481,32 @@ void FUN_8001701c(void)
 
 
 
-void FUN_80017150(u_long *param_1)
+void FUN_80017150(u_long *source)
 
 {
-  int iVar1;
-  u_long *puVar2;
-  RECT local_18;
+  int max;
+  u_long *puVar1;
+  RECT dest;
   
   VSyncCallback((f *)0x0);
-  iVar1 = 0x4aff;
-  puVar2 = param_1;
+  max = 19199;
+  puVar1 = source;
   do {
-    *puVar2 = 0;
-    iVar1 = iVar1 + -1;
-    puVar2 = puVar2 + 1;
-  } while (-1 < iVar1);
-  local_18.x = 0;
-  local_18.y = 0;
-  local_18.w = 0x140;
-  local_18.h = 0x78;
-  LoadImage(&local_18,param_1);
-  local_18.y = 0x78;
-  LoadImage(&local_18,param_1);
-  local_18.y = 0x100;
-  LoadImage(&local_18,param_1);
-  local_18.y = 0x178;
-  LoadImage(&local_18,param_1);
+    *puVar1 = 0;
+    max = max + -1;
+    puVar1 = puVar1 + 1;
+  } while (-1 < max);
+  dest.x = 0;
+  dest.y = 0;
+  dest.w = 320;
+  dest.h = 120;
+  LoadImage(&dest,source);
+  dest.y = 120;
+  LoadImage(&dest,source);
+  dest.y = 256;
+  LoadImage(&dest,source);
+  dest.y = 376;
+  LoadImage(&dest,source);
   return;
 }
 
@@ -2584,11 +2586,11 @@ int FUN_8001726c(byte *param_1,byte *param_2)
 
 
 
-void FUN_80017300(undefined4 param_1)
+void FUN_80017300(u_long *source)
 
 {
   DAT_80054c68 = 1;
-  DAT_80054d0c = param_1;
+  DAT_80054d0c = source;
   return;
 }
 
@@ -2596,7 +2598,7 @@ void FUN_80017300(undefined4 param_1)
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-void FUN_80017314(int param_1)
+void playMovie(int param_1)
 
 {
   bool bVar1;
@@ -3282,7 +3284,7 @@ void start(void)
     puVar1 = puVar1 + 1;
   } while (puVar1 < &DAT_80065ee4);
   DAT_80054c98 = unaff_retaddr;
-  InitHeap(&DAT_80065ee8,0x19211c);
+  InitHeap(&someTim,0x19211c);
   main();
   trap(1);
                     // WARNING: Bad instruction - Truncating control flow here
@@ -3299,7 +3301,7 @@ void stup1(void)
   undefined4 unaff_retaddr;
   
   DAT_80054c98 = unaff_retaddr;
-  InitHeap(&DAT_80065ee8,0x19211c);
+  InitHeap(&someTim,0x19211c);
   main();
   trap(1);
                     // WARNING: Bad instruction - Truncating control flow here
@@ -15582,41 +15584,40 @@ void GsInitGraph(ushort x,ushort y,ushort intmode,ushort dith,ushort varmmode)
 
 
 
-void gpu_init(undefined2 param_1,undefined2 param_2,uint param_3,undefined param_4,undefined param_5
-             )
+void gpu_init(short param_1,short param_2,uint param_3,u_char param_4,u_char param_5)
 
 {
   int iVar1;
   
   ResetGraph(-(uint)((param_3 >> 4 & 3) == 3) & 3);
-  DAT_800631be = 0;
-  DAT_800631bc = 0;
-  DAT_800631c6 = 0;
-  DAT_800631c4 = 0;
-  DAT_800631c2 = 0;
-  DAT_800631c0 = 0;
-  DAT_800631c8 = 0;
-  DAT_800631cb = 0;
-  DAT_800631cc = 0;
-  DAT_800631ca = param_4;
-  PutDrawEnv((DRAWENV *)&DAT_800631b4);
-  DAT_80063210 = 0;
-  DAT_80063212 = 0;
-  DAT_80063218 = 0;
-  DAT_8006321a = 0;
-  DAT_8006321c = 0;
-  DAT_8006321e = 0;
-  DAT_80063214 = param_1;
-  DAT_80063216 = param_2;
+  drawenv.ofs[1] = 0;
+  drawenv.ofs[0] = 0;
+  drawenv.tw.h = 0;
+  drawenv.tw.w = 0;
+  drawenv.tw.y = 0;
+  drawenv.tw.x = 0;
+  drawenv.tpage = 0;
+  drawenv.dfe = '\0';
+  drawenv.isbg = '\0';
+  drawenv.dtd = param_4;
+  PutDrawEnv(&drawenv);
+  dispenv.disp.x = 0;
+  dispenv.disp.y = 0;
+  dispenv.screen.x = 0;
+  dispenv.screen.y = 0;
+  dispenv.screen.w = 0;
+  dispenv.screen.h = 0;
+  dispenv.disp.w = param_1;
+  dispenv.disp.h = param_2;
   iVar1 = FUN_8001f7c0();
   if (iVar1 == 1) {
-    DAT_8006321a = 0x18;
-    DAT_80063222 = 1;
+    dispenv.screen.y = 0x18;
+    dispenv.pad0 = '\x01';
   }
-  DAT_80063220 = (byte)param_3 & 1;
+  dispenv.isinter = (byte)param_3 & 1;
   DAT_80065dc0 = (ushort)param_3 & 4;
-  DAT_80063221 = param_5;
-  PutDispEnv((DISPENV *)&DAT_80063210);
+  dispenv.isrgb24 = param_5;
+  PutDispEnv(&dispenv);
   return;
 }
 
@@ -15625,15 +15626,15 @@ void gpu_init(undefined2 param_1,undefined2 param_2,uint param_3,undefined param
 void GsInitGraph2(u_short x,u_short y,u_short intmode,u_short dith,u_short vrammode)
 
 {
-  DAT_80063220 = (byte)intmode & 1;
+  dispenv.isinter = (byte)intmode & 1;
   DAT_80065dc0 = intmode & 4;
-  DAT_800631c8 = 0;
-  DAT_800631ca = (undefined)dith;
-  DAT_800631cb = 0;
-  DAT_800631cc = 0;
-  DAT_80063221 = (undefined)vrammode;
-  DAT_80063214 = x;
-  DAT_80063216 = y;
+  drawenv.tpage = 0;
+  drawenv.dtd = (u_char)dith;
+  drawenv.dfe = '\0';
+  drawenv.isbg = '\0';
+  dispenv.isrgb24 = (u_char)vrammode;
+  dispenv.disp.w = x;
+  dispenv.disp.h = y;
   valiable_init(x,y);
   return;
 }
@@ -15727,7 +15728,7 @@ void GsSortClear(uchar param_1,uchar param_2,uchar param_3,GsOT *param_4)
   uVar1 = (&DAT_80058328)[iVar3];
   *(undefined2 *)(&DAT_800572b6 + iVar4) = uVar2;
   *(undefined2 *)(&DAT_800572b2 + iVar4) = uVar1;
-  if (DAT_80063221 != '\0') {
+  if (dispenv.isrgb24 != '\0') {
     *(short *)(&DAT_800572b4 + iVar4) = (short)((DAT_80063704 * 3) / 2);
     GS_001_OBJ_5E8();
     return;
@@ -15762,7 +15763,6 @@ int GsGetActiveBuff(void)
 
 
 // WARNING: Unknown calling convention yet parameter storage is locked
-// Possible GS_002.OBJ/GsSetDrawBuffOffset
 
 void GsSetDrawBuffOffset(void)
 
@@ -15776,9 +15776,9 @@ void GsSetDrawBuffOffset(void)
   if (DAT_80065dc0 != 0) {
     DAT_8006356c = 0;
     DAT_80063568 = 0;
-    DAT_800631bc = DAT_800588f4 + (&DAT_80058324)[DAT_80065db0];
-    DAT_800631be = DAT_800588f6 + (&DAT_80058328)[DAT_80065db0];
-    PutDrawEnv((DRAWENV *)&DAT_800631b4);
+    drawenv.ofs[0] = DAT_800588f4 + (&DAT_80058324)[DAT_80065db0];
+    drawenv.ofs[1] = DAT_800588f6 + (&DAT_80058328)[DAT_80065db0];
+    PutDrawEnv(&drawenv);
     GS_002_OBJ_10C();
     return;
   }
@@ -15829,11 +15829,11 @@ void FUN_80024964(int param_1,int param_2)
 void GsSetDrawBuffClip(void)
 
 {
-  DAT_800631b8 = DAT_80063a98;
-  DAT_800631ba = DAT_80063a9a;
-  DAT_800631b4 = DAT_80063a94 + (&DAT_80058324)[DAT_80065db0];
-  DAT_800631b6 = DAT_80063a96 + (&DAT_80058328)[DAT_80065db0];
-  PutDrawEnv((DRAWENV *)&DAT_800631b4);
+  drawenv.clip.w = DAT_80063a98;
+  drawenv.clip.h = DAT_80063a9a;
+  drawenv.clip.x = DAT_80063a94 + (&DAT_80058324)[DAT_80065db0];
+  drawenv.clip.y = DAT_80063a96 + (&DAT_80058328)[DAT_80065db0];
+  PutDrawEnv(&drawenv);
   return;
 }
 
@@ -15844,9 +15844,9 @@ void GsSetDrawBuffClip(void)
 void GsSwapDispBuff(void)
 
 {
-  DAT_80063210 = (&DAT_80058324)[(short)DAT_80065db0];
-  DAT_80063212 = (&DAT_80058328)[(short)DAT_80065db0];
-  PutDispEnv((DISPENV *)&DAT_80063210);
+  dispenv.disp.x = (&DAT_80058324)[(short)DAT_80065db0];
+  dispenv.disp.y = (&DAT_80058328)[(short)DAT_80065db0];
+  PutDispEnv(&dispenv);
   SetDispMask(1);
   DAT_80065dac = DAT_80065dac + 1;
   if (DAT_80065dac == 0) {
@@ -16316,25 +16316,23 @@ void SetTransMatrix(MATRIX *m)
 
 
 
-// Possible GS_103.OBJ/GsDefDispBuff
-
-void FUN_80025400(undefined2 param_1,undefined2 param_2,undefined2 param_3,undefined2 param_4)
+void GsDefDispBuff(u_short x0,u_short y0,u_short x1,u_short y1)
 
 {
-  DAT_800588ec = param_1;
-  DAT_800588ee = param_3;
-  DAT_800588f0 = param_2;
-  DAT_800588f2 = param_4;
+  DAT_800588ec = x0;
+  DAT_800588ee = x1;
+  DAT_800588f0 = y0;
+  DAT_800588f2 = y1;
   if (DAT_80065dc0 != 0) {
     DAT_800588ec = 0;
     DAT_800588ee = 0;
     DAT_800588f0 = 0;
     DAT_800588f2 = 0;
   }
-  DAT_80058324 = param_1;
-  DAT_80058326 = param_3;
-  DAT_80058328 = param_2;
-  DAT_8005832a = param_4;
+  DAT_80058324 = x0;
+  DAT_80058326 = x1;
+  DAT_80058328 = y0;
+  DAT_8005832a = y1;
   GsSetDrawBuffClip();
   GsSetDrawBuffOffset();
   return;
@@ -31244,7 +31242,7 @@ int ResetGraph(int mode)
   int iVar1;
   
   if (((mode & 7U) != 0) && ((mode & 7U) != 3)) {
-    if (1 < DAT_800439ca) {
+    if (1 < debugLevel) {
       printf("ResetGraph(%d)...\n",mode);
     }
     iVar1 = _reset(1);
@@ -31283,7 +31281,7 @@ int SetGraphReverse(int mode)
   uint uVar3;
   
   uVar3 = (uint)DAT_800439cb;
-  if (1 < DAT_800439ca) {
+  if (1 < debugLevel) {
     printf("SetGraphReverse(%d)...\n",mode);
   }
   DAT_800439cb = (byte)mode;
@@ -31329,8 +31327,8 @@ int SetGraphDebug(int level)
 {
   uint uVar1;
   
-  uVar1 = (uint)DAT_800439ca;
-  DAT_800439ca = (byte)level;
+  uVar1 = (uint)debugLevel;
+  debugLevel = (byte)level;
   if ((level & 0xffU) != 0) {
     printf("SetGraphDebug:level:%d,type:%d reverse:%d\n",level & 0xff,(uint)DAT_800439c8,
            (uint)DAT_800439cb);
@@ -31346,7 +31344,7 @@ int SetGraphQueue(int mode)
   uint uVar1;
   
   uVar1 = (uint)DAT_800439c9;
-  if (1 < DAT_800439ca) {
+  if (1 < debugLevel) {
     printf("SetGrapQue(%d)...\n",mode);
   }
   if (mode != (uint)DAT_800439c9) {
@@ -31372,7 +31370,7 @@ undefined GetGraphType(void)
 int GetGraphDebug(void)
 
 {
-  return (uint)DAT_800439ca;
+  return (uint)debugLevel;
 }
 
 
@@ -31382,7 +31380,7 @@ u_long DrawSyncCallback(func *func)
 {
   func *pfVar1;
   
-  if (1 < DAT_800439ca) {
+  if (1 < debugLevel) {
     printf("DrawSyncCallback(%08x)...\n",func);
   }
   pfVar1 = DAT_800439d4;
@@ -31397,7 +31395,7 @@ void SetDispMask(int mask)
 {
   undefined4 uVar1;
   
-  if (1 < DAT_800439ca) {
+  if (1 < debugLevel) {
     printf("SetDispMask(%d)...\n",mask);
   }
   if (mask == 0) {
@@ -31416,13 +31414,13 @@ void SetDispMask(int mask)
 int DrawSync(int mode)
 
 {
-  int iVar1;
+  int queuePos;
   
-  if (1 < DAT_800439ca) {
+  if (1 < debugLevel) {
     printf("DrawSync(%d)...\n",mode);
   }
-  iVar1 = _sync(mode);
-  return iVar1;
+  queuePos = _sync(mode);
+  return queuePos;
 }
 
 
@@ -31433,8 +31431,8 @@ void checkRECT(undefined4 param_1,short *param_2)
   int iVar1;
   int iVar2;
   
-  if (DAT_800439ca != '\x01') {
-    if (DAT_800439ca == '\x02') {
+  if (debugLevel != '\x01') {
+    if (debugLevel == '\x02') {
       printf("%s:",param_1);
       printf("(%d,%d)-(%d,%d)\n",(int)*param_2,(int)param_2[1],(int)param_2[2],(int)param_2[3]);
       return;
@@ -31560,7 +31558,7 @@ u_long * ClearOTag(u_long *ot,int n)
 {
   int iVar1;
   
-  if (1 < DAT_800439ca) {
+  if (1 < debugLevel) {
     printf("ClearOTag(%08x,%d)...\n",ot,n);
   }
   for (iVar1 = n + -1; iVar1 != 0; iVar1 = iVar1 + -1) {
@@ -31577,7 +31575,7 @@ u_long * ClearOTag(u_long *ot,int n)
 u_long * ClearOTagR(u_long *ot,int n)
 
 {
-  if (1 < DAT_800439ca) {
+  if (1 < debugLevel) {
     printf("ClearOTagR(%08x,%d)...\n",ot,n);
   }
   _otc(ot,n);
@@ -31603,7 +31601,7 @@ void DrawPrim(void *p)
 void DrawOTag(u_long *p)
 
 {
-  if (1 < DAT_800439ca) {
+  if (1 < debugLevel) {
     printf("DrawOTag(%08x)...\n",p);
   }
   _addque2(_cwc,p,0,0);
@@ -31615,7 +31613,7 @@ void DrawOTag(u_long *p)
 DRAWENV * PutDrawEnv(DRAWENV *env)
 
 {
-  if (1 < DAT_800439ca) {
+  if (1 < debugLevel) {
     printf("PutDrawEnv(%08x)...\n",env);
   }
   SetDrawEnv(&env->dr_env,env);
@@ -31630,7 +31628,7 @@ DRAWENV * PutDrawEnv(DRAWENV *env)
 void DrawOTagEnv(u_long *p,DRAWENV *env)
 
 {
-  if (1 < DAT_800439ca) {
+  if (1 < debugLevel) {
     printf("DrawOTagEnv(%08x,&08x)...\n",p,env);
   }
   SetDrawEnv(&env->dr_env,env);
@@ -31670,7 +31668,7 @@ DISPENV * PutDispEnv(DISPENV *env)
   uint uVar14;
   
   uVar14 = 0x8000000;
-  if (1 < DAT_800439ca) {
+  if (1 < debugLevel) {
     printf("PutDispEnv(%08x)...\n",env);
   }
   if (DAT_800439c8 - 1 < 2) {
@@ -38803,7 +38801,7 @@ void FUN_80039130(void)
 
 // Possible A39.OBJ/SetSp
 
-void FUN_80039140(void)
+void SetSp(void)
 
 {
   return;
@@ -38811,9 +38809,7 @@ void FUN_80039140(void)
 
 
 
-// Possible A40.OBJ/SwEnterCriticalSection
-
-void FUN_80039150(void)
+void SwEnterCriticalSection(void)
 
 {
   setCopReg(0,Status,Status & 0xfffffbfe,0);
@@ -38822,9 +38818,7 @@ void FUN_80039150(void)
 
 
 
-// Possible A41.OBJ/SwExitCriticalSection
-
-void FUN_80039170(void)
+void SwExitCriticalSection(void)
 
 {
   setCopReg(0,Status,Status | 0x401,0);
@@ -39101,12 +39095,12 @@ void PAD_init(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined
 
 
 
-void InitPAD(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+void InitPAD(char *bufA,long lenA,char *bufB,long lenB)
 
 {
   _patch_pad();
   ChangeClearPad(0);
-  InitPad(param_1,param_2,param_3,param_4);
+  InitPad(bufA,lenA,bufB,lenB);
   return;
 }
 
