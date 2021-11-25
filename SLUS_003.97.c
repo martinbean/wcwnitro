@@ -51,66 +51,6 @@ struct CVECTOR {
     u_char cd;
 };
 
-typedef ulong size_t;
-
-typedef struct TMD_P_F4G TMD_P_F4G, *PTMD_P_F4G;
-
-struct TMD_P_F4G {
-    u_char out;
-    u_char in;
-    u_char dummy;
-    u_char cd;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char code;
-    u_char r1;
-    u_char g1;
-    u_char b1;
-    u_char dummy1;
-    u_char r2;
-    u_char g2;
-    u_char b2;
-    u_char dummy2;
-    u_char r3;
-    u_char g3;
-    u_char b3;
-    u_char dummy3;
-    u_short n0;
-    u_short $2;
-    u_short $3;
-    u_short v2;
-    u_short v3;
-    u_short dummy4;
-};
-
-typedef struct GsFOGPARAM GsFOGPARAM, *PGsFOGPARAM;
-
-struct GsFOGPARAM {
-    short dqa;
-    long dqb;
-    uchar rfc;
-    uchar gfc;
-    uchar bfc;
-};
-
-typedef struct VERT VERT, *PVERT;
-
-struct VERT {
-    short vx;
-    short vy;
-    short vz;
-    u_char tu;
-    u_char tv;
-};
-
-typedef struct GsOT_TAG GsOT_TAG, *PGsOT_TAG;
-
-struct GsOT_TAG {
-    uint p:24;
-    uchar num:8;
-};
-
 typedef struct GsDOBJ2 GsDOBJ2, *PGsDOBJ2;
 
 typedef struct _GsCOORDINATE2 _GsCOORDINATE2, *P_GsCOORDINATE2;
@@ -154,9 +94,9 @@ struct GsRVIEW2 {
     GsCOORDINATE2 * super;
 };
 
-typedef struct TMD_P_G4G TMD_P_G4G, *PTMD_P_G4G;
+typedef struct TMD_P_F4G TMD_P_F4G, *PTMD_P_F4G;
 
-struct TMD_P_G4G {
+struct TMD_P_F4G {
     u_char out;
     u_char in;
     u_char dummy;
@@ -179,15 +119,25 @@ struct TMD_P_G4G {
     u_char dummy3;
     u_short n0;
     u_short $2;
-    u_short n1;
     u_short $3;
-    u_short n2;
     u_short v2;
-    u_short n3;
     u_short v3;
+    u_short dummy4;
+};
+
+typedef struct VERT VERT, *PVERT;
+
+struct VERT {
+    short vx;
+    short vy;
+    short vz;
+    u_char tu;
+    u_char tv;
 };
 
 typedef struct GsOT GsOT, *PGsOT;
+
+typedef struct GsOT_TAG GsOT_TAG, *PGsOT_TAG;
 
 struct GsOT {
     ulong length;
@@ -195,6 +145,11 @@ struct GsOT {
     ulong offset;
     ulong point;
     struct GsOT_TAG * tag;
+};
+
+struct GsOT_TAG {
+    uint p:24;
+    uchar num:8;
 };
 
 typedef struct GsIMAGE GsIMAGE, *PGsIMAGE;
@@ -211,17 +166,6 @@ struct GsIMAGE {
     ushort cw;
     ushort ch;
     ulong * clut;
-};
-
-typedef struct GsF_LIGHT GsF_LIGHT, *PGsF_LIGHT;
-
-struct GsF_LIGHT {
-    int vx;
-    int vy;
-    int vz;
-    uchar r;
-    uchar g;
-    uchar b;
 };
 
 typedef struct TMD_P_F3G TMD_P_F3G, *PTMD_P_F3G;
@@ -276,7 +220,61 @@ struct TMD_P_G3G {
     u_short v2;
 };
 
+typedef struct GsF_LIGHT GsF_LIGHT, *PGsF_LIGHT;
+
+struct GsF_LIGHT {
+    int vx;
+    int vy;
+    int vz;
+    uchar r;
+    uchar g;
+    uchar b;
+};
+
 typedef uchar PACKET;
+
+typedef struct GsFOGPARAM GsFOGPARAM, *PGsFOGPARAM;
+
+struct GsFOGPARAM {
+    short dqa;
+    long dqb;
+    uchar rfc;
+    uchar gfc;
+    uchar bfc;
+};
+
+typedef struct TMD_P_G4G TMD_P_G4G, *PTMD_P_G4G;
+
+struct TMD_P_G4G {
+    u_char out;
+    u_char in;
+    u_char dummy;
+    u_char cd;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char code;
+    u_char r1;
+    u_char g1;
+    u_char b1;
+    u_char dummy1;
+    u_char r2;
+    u_char g2;
+    u_char b2;
+    u_char dummy2;
+    u_char r3;
+    u_char g3;
+    u_char b3;
+    u_char dummy3;
+    u_short n0;
+    u_short $2;
+    u_short n1;
+    u_short $3;
+    u_short n2;
+    u_short v2;
+    u_short n3;
+    u_short v3;
+};
 
 typedef struct DECDCTENV DECDCTENV, *PDECDCTENV;
 
@@ -284,32 +282,6 @@ struct DECDCTENV {
     u_char iq_y[64];
     u_char iq_c[64];
     short dct[64];
-};
-
-typedef struct SpuCommonAttr SpuCommonAttr, *PSpuCommonAttr;
-
-typedef struct SpuVolume SpuVolume, *PSpuVolume;
-
-typedef struct SpuExtAttr SpuExtAttr, *PSpuExtAttr;
-
-struct SpuVolume {
-    short left;
-    short right;
-};
-
-struct SpuExtAttr {
-    struct SpuVolume volume;
-    long reverb;
-    long mix;
-};
-
-struct SpuCommonAttr {
-    ulong mask;
-    struct SpuVolume mvol;
-    struct SpuVolume mvolmode;
-    struct SpuVolume mvolx;
-    struct SpuExtAttr cd;
-    struct SpuExtAttr ext;
 };
 
 typedef struct CdlLOC CdlLOC, *PCdlLOC;
@@ -321,8 +293,6 @@ struct CdlLOC {
     u_char track;
 };
 
-typedef void (* CdlCB)(u_char, u_char *);
-
 typedef struct CdlATV CdlATV, *PCdlATV;
 
 struct CdlATV {
@@ -330,6 +300,22 @@ struct CdlATV {
     u_char val1;
     u_char val2;
     u_char val3;
+};
+
+typedef struct StHEADER StHEADER, *PStHEADER;
+
+struct StHEADER {
+    u_short id;
+    u_short type;
+    u_short secCount;
+    u_short nSectors;
+    u_long frameCount;
+    u_long frameSize;
+    u_short width;
+    u_short height;
+    u_long dummy1;
+    u_long dummy2;
+    struct CdlLOC loc;
 };
 
 typedef struct CdlFILE CdlFILE, *PCdlFILE;
@@ -340,26 +326,7 @@ struct CdlFILE {
     char name[16];
 };
 
-typedef struct LINE_F2 LINE_F2, *PLINE_F2;
-
-struct LINE_F2 {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char code;
-    short x0;
-    short y0;
-    short x1;
-    short y1;
-};
-
-typedef struct DR_TPAGE DR_TPAGE, *PDR_TPAGE;
-
-struct DR_TPAGE {
-    u_long tag;
-    u_long code[1];
-};
+typedef void (* CdlCB)(u_char, u_char *);
 
 typedef struct TILE_8 TILE_8, *PTILE_8;
 
@@ -371,14 +338,6 @@ struct TILE_8 {
     u_char code;
     short x0;
     short y0;
-};
-
-typedef struct DR_LOAD DR_LOAD, *PDR_LOAD;
-
-struct DR_LOAD {
-    u_long tag;
-    u_long code[3];
-    u_long p[13];
 };
 
 typedef struct POLY_G3 POLY_G3, *PPOLY_G3;
@@ -405,112 +364,6 @@ struct POLY_G3 {
     short y2;
 };
 
-typedef struct LINE_G3 LINE_G3, *PLINE_G3;
-
-struct LINE_G3 {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char code;
-    short x0;
-    short y0;
-    u_char r1;
-    u_char g1;
-    u_char b1;
-    u_char p1;
-    short x1;
-    short y1;
-    u_char r2;
-    u_char g2;
-    u_char b2;
-    u_char p2;
-    short x2;
-    short y2;
-    u_long pad;
-};
-
-typedef struct TILE TILE, *PTILE;
-
-struct TILE {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char code;
-    short x0;
-    short y0;
-    short w;
-    short h;
-};
-
-typedef struct DR_TWIN DR_TWIN, *PDR_TWIN;
-
-struct DR_TWIN {
-    u_long tag;
-    u_long code[2];
-};
-
-typedef struct LINE_F4 LINE_F4, *PLINE_F4;
-
-struct LINE_F4 {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char code;
-    short x0;
-    short y0;
-    short x1;
-    short y1;
-    short x2;
-    short y2;
-    short x3;
-    short y3;
-    u_long pad;
-};
-
-typedef struct LINE_F3 LINE_F3, *PLINE_F3;
-
-struct LINE_F3 {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char code;
-    short x0;
-    short y0;
-    short x1;
-    short y1;
-    short x2;
-    short y2;
-    u_long pad;
-};
-
-typedef struct DR_MOVE DR_MOVE, *PDR_MOVE;
-
-struct DR_MOVE {
-    u_long tag;
-    u_long code[5];
-};
-
-typedef struct SPRT SPRT, *PSPRT;
-
-struct SPRT {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char code;
-    short x0;
-    short y0;
-    u_char u0;
-    u_char $2;
-    u_short clut;
-    short w;
-    short h;
-};
-
 typedef struct POLY_F3 POLY_F3, *PPOLY_F3;
 
 struct POLY_F3 {
@@ -525,26 +378,6 @@ struct POLY_F3 {
     short y1;
     short x2;
     short y2;
-};
-
-typedef struct DISPENV DISPENV, *PDISPENV;
-
-typedef struct RECT RECT, *PRECT;
-
-struct RECT {
-    short x;
-    short y;
-    short w;
-    short h;
-};
-
-struct DISPENV {
-    struct RECT disp;
-    struct RECT screen;
-    u_char isinter;
-    u_char isrgb24;
-    u_char pad0;
-    u_char pad1;
 };
 
 typedef struct POLY_F4 POLY_F4, *PPOLY_F4;
@@ -653,41 +486,28 @@ struct POLY_FT3 {
     u_short pad1;
 };
 
-typedef struct TILE_1 TILE_1, *PTILE_1;
-
-struct TILE_1 {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char code;
-    short x0;
-    short y0;
-};
-
-typedef struct LINE_G2 LINE_G2, *PLINE_G2;
-
-struct LINE_G2 {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char code;
-    short x0;
-    short y0;
-    u_char r1;
-    u_char g1;
-    u_char b1;
-    u_char p1;
-    short x1;
-    short y1;
-};
-
 typedef struct DR_MODE DR_MODE, *PDR_MODE;
 
 struct DR_MODE {
     u_long tag;
     u_long code[2];
+};
+
+typedef struct LINE_F3 LINE_F3, *PLINE_F3;
+
+struct LINE_F3 {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char code;
+    short x0;
+    short y0;
+    short x1;
+    short y1;
+    short x2;
+    short y2;
+    u_long pad;
 };
 
 typedef struct DR_ENV DR_ENV, *PDR_ENV;
@@ -697,37 +517,6 @@ struct DR_ENV {
     u_long code[15];
 };
 
-typedef struct LINE_G4 LINE_G4, *PLINE_G4;
-
-struct LINE_G4 {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char code;
-    short x0;
-    short y0;
-    u_char r1;
-    u_char g1;
-    u_char b1;
-    u_char p1;
-    short x1;
-    short y1;
-    u_char r2;
-    u_char g2;
-    u_char b2;
-    u_char p2;
-    short x2;
-    short y2;
-    u_char r3;
-    u_char g3;
-    u_char b3;
-    u_char p3;
-    short x3;
-    short y3;
-    u_long pad;
-};
-
 typedef struct DR_OFFSET DR_OFFSET, *PDR_OFFSET;
 
 struct DR_OFFSET {
@@ -735,19 +524,13 @@ struct DR_OFFSET {
     u_long code[2];
 };
 
-typedef struct SPRT_16 SPRT_16, *PSPRT_16;
+typedef struct RECT RECT, *PRECT;
 
-struct SPRT_16 {
-    u_long tag;
-    u_char r0;
-    u_char g0;
-    u_char b0;
-    u_char code;
-    short x0;
-    short y0;
-    u_char u0;
-    u_char $2;
-    u_short clut;
+struct RECT {
+    short x;
+    short y;
+    short w;
+    short h;
 };
 
 typedef struct POLY_G4 POLY_G4, *PPOLY_G4;
@@ -792,11 +575,95 @@ struct TILE_16 {
     short y0;
 };
 
+typedef struct SPRT_16 SPRT_16, *PSPRT_16;
+
+struct SPRT_16 {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char code;
+    short x0;
+    short y0;
+    u_char u0;
+    u_char $2;
+    u_short clut;
+};
+
+typedef struct LINE_G2 LINE_G2, *PLINE_G2;
+
+struct LINE_G2 {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char code;
+    short x0;
+    short y0;
+    u_char r1;
+    u_char g1;
+    u_char b1;
+    u_char p1;
+    short x1;
+    short y1;
+};
+
+typedef struct TILE TILE, *PTILE;
+
+struct TILE {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char code;
+    short x0;
+    short y0;
+    short w;
+    short h;
+};
+
+typedef struct DISPENV DISPENV, *PDISPENV;
+
+struct DISPENV {
+    struct RECT disp;
+    struct RECT screen;
+    u_char isinter;
+    u_char isrgb24;
+    u_char pad0;
+    u_char pad1;
+};
+
 typedef struct DR_PRIO DR_PRIO, *PDR_PRIO;
 
 struct DR_PRIO {
     u_long tag;
     u_long code[2];
+};
+
+typedef struct DR_AREA DR_AREA, *PDR_AREA;
+
+struct DR_AREA {
+    u_long tag;
+    u_long code[2];
+};
+
+typedef struct LINE_F4 LINE_F4, *PLINE_F4;
+
+struct LINE_F4 {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char code;
+    short x0;
+    short y0;
+    short x1;
+    short y1;
+    short x2;
+    short y2;
+    short x3;
+    short y3;
+    u_long pad;
 };
 
 typedef struct SPRT_8 SPRT_8, *PSPRT_8;
@@ -812,6 +679,134 @@ struct SPRT_8 {
     u_char u0;
     u_char $2;
     u_short clut;
+};
+
+typedef struct SPRT SPRT, *PSPRT;
+
+struct SPRT {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char code;
+    short x0;
+    short y0;
+    u_char u0;
+    u_char $2;
+    u_short clut;
+    short w;
+    short h;
+};
+
+typedef struct LINE_F2 LINE_F2, *PLINE_F2;
+
+struct LINE_F2 {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char code;
+    short x0;
+    short y0;
+    short x1;
+    short y1;
+};
+
+typedef struct DR_TPAGE DR_TPAGE, *PDR_TPAGE;
+
+struct DR_TPAGE {
+    u_long tag;
+    u_long code[1];
+};
+
+typedef struct DR_LOAD DR_LOAD, *PDR_LOAD;
+
+struct DR_LOAD {
+    u_long tag;
+    u_long code[3];
+    u_long p[13];
+};
+
+typedef struct LINE_G3 LINE_G3, *PLINE_G3;
+
+struct LINE_G3 {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char code;
+    short x0;
+    short y0;
+    u_char r1;
+    u_char g1;
+    u_char b1;
+    u_char p1;
+    short x1;
+    short y1;
+    u_char r2;
+    u_char g2;
+    u_char b2;
+    u_char p2;
+    short x2;
+    short y2;
+    u_long pad;
+};
+
+typedef struct DR_TWIN DR_TWIN, *PDR_TWIN;
+
+struct DR_TWIN {
+    u_long tag;
+    u_long code[2];
+};
+
+typedef struct DR_MOVE DR_MOVE, *PDR_MOVE;
+
+struct DR_MOVE {
+    u_long tag;
+    u_long code[5];
+};
+
+typedef struct TILE_1 TILE_1, *PTILE_1;
+
+struct TILE_1 {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char code;
+    short x0;
+    short y0;
+};
+
+typedef struct LINE_G4 LINE_G4, *PLINE_G4;
+
+struct LINE_G4 {
+    u_long tag;
+    u_char r0;
+    u_char g0;
+    u_char b0;
+    u_char code;
+    short x0;
+    short y0;
+    u_char r1;
+    u_char g1;
+    u_char b1;
+    u_char p1;
+    short x1;
+    short y1;
+    u_char r2;
+    u_char g2;
+    u_char b2;
+    u_char p2;
+    short x2;
+    short y2;
+    u_char r3;
+    u_char g3;
+    u_char b3;
+    u_char p3;
+    short x3;
+    short y3;
+    u_long pad;
 };
 
 typedef struct DRAWENV DRAWENV, *PDRAWENV;
@@ -872,11 +867,59 @@ struct POLY_GT4 {
     u_short pad3;
 };
 
-typedef struct DR_AREA DR_AREA, *PDR_AREA;
+typedef ulong size_t;
 
-struct DR_AREA {
-    u_long tag;
-    u_long code[2];
+typedef struct SpuExtAttr SpuExtAttr, *PSpuExtAttr;
+
+typedef struct SpuVolume SpuVolume, *PSpuVolume;
+
+struct SpuVolume {
+    short left;
+    short right;
+};
+
+struct SpuExtAttr {
+    struct SpuVolume volume;
+    long reverb;
+    long mix;
+};
+
+typedef struct SpuCommonAttr SpuCommonAttr, *PSpuCommonAttr;
+
+struct SpuCommonAttr {
+    ulong mask;
+    struct SpuVolume mvol;
+    struct SpuVolume mvolmode;
+    struct SpuVolume mvolx;
+    struct SpuExtAttr cd;
+    struct SpuExtAttr ext;
+};
+
+typedef struct MovieInfo MovieInfo, *PMovieInfo;
+
+struct MovieInfo {
+    char * fileName;
+    int is24bit;
+    int startFrame;
+    int endFrame;
+    int posX;
+    int posY;
+    int scrWidth;
+    int scrHeight;
+};
+
+typedef struct DECENV DECENV, *PDECENV;
+
+struct DECENV {
+    u_long * vlcbuf[2];
+    int vlcid;
+    u_short * imgbuf[2];
+    int imgid;
+    struct RECT rect[2];
+    int rectid;
+    struct RECT slice;
+    int isdone;
+    int is24bit;
 };
 
 
@@ -913,7 +956,7 @@ void main(void)
   puVar7 = &DAT_80063260;
   DAT_8006322c = 0;
   DAT_80063230 = 0xff;
-  _DAT_80063234 = 0xff;
+  _volume = 0xff;
   DAT_80063240 = 0xff;
   DAT_80063238 = 2;
   DAT_800633e0 = 0xffffffff;
@@ -999,8 +1042,8 @@ void main(void)
     if (DAT_80063254 == 5) {
       FUN_800182bc();
       SsSetSerialAttr(SS_SERIAL_A,SS_MIX,SS_SON);
-      SsSetSerialVol(SS_SERIAL_A,DAT_80063234,DAT_80063234);
-      FUN_800186c0(_DAT_80063234);
+      SsSetSerialVol(SS_SERIAL_A,volume,volume);
+      FUN_800186c0(_volume);
       FUN_80017300(&DAT_80065ee4);
       playMovie(1);
       DAT_80063254 = 0;
@@ -2092,12 +2135,12 @@ void FUN_800163e8(undefined param_1,undefined param_2,undefined param_3,int para
     (&DAT_800635b8)[DAT_80054cf0 * 8] = param_1;
     (&DAT_800635b9)[DAT_80054cf0 * 8] = param_2;
     (&DAT_800635ba)[DAT_80054cf0 * 8] = param_3;
-    FUN_80039120();
+    EnterCriticalSection();
     uVar2 = GetRCnt(1);
     iVar1 = DAT_80054cf0 * 2;
     DAT_80054cf0 = DAT_80054cf0 + 1;
     (&DAT_800635bc)[iVar1] = uVar2;
-    FUN_80039130();
+    ExitCriticalSection();
   }
   return;
 }
@@ -2113,17 +2156,17 @@ void FUN_800164a4(int param_1,undefined param_2,undefined param_3,undefined para
   if (param_5 == 0) {
     iVar2 = param_1 * 8;
     if (param_1 == 0) {
-      FUN_80039120();
+      EnterCriticalSection();
       DAT_80054d34 = GetRCnt(1);
-      FUN_80039130();
+      ExitCriticalSection();
     }
     else {
       (&DAT_8006372c)[iVar2] = param_2;
       (&DAT_8006372d)[iVar2] = param_3;
       (&DAT_8006372e)[iVar2] = param_4;
-      FUN_80039120();
+      EnterCriticalSection();
       iVar2 = GetRCnt(1);
-      FUN_80039130();
+      ExitCriticalSection();
       iVar1 = iVar2 - DAT_80054d34;
       DAT_80054d34 = iVar2;
       (&DAT_80063730)[param_1 * 2] = iVar1 + (&DAT_80063730)[param_1 * 2];
@@ -2265,9 +2308,9 @@ void FUN_8001659c(undefined4 param_1)
   }
   FUN_800162ec((DAT_80054cf0 + 2) * 7 + 0x10,0xaa,5,0xffffff6a,0xff,0xff,0xff);
   FUN_800162ec((DAT_80054cf0 + 3) * 7 + 0x10,0xaa,5,0xffffff6a,0xff,0xff,0xff);
-  FUN_80039120();
+  EnterCriticalSection();
   ResetRCnt(1);
-  FUN_80039130();
+  ExitCriticalSection();
   DAT_80054cf0 = 0;
   if (-1 < DAT_80054da8) {
     iVar9 = 0;
@@ -2589,7 +2632,7 @@ int FUN_8001726c(byte *param_1,byte *param_2)
 void FUN_80017300(u_long *source)
 
 {
-  DAT_80054c68 = 1;
+  isFirst = 1;
   DAT_80054d0c = source;
   return;
 }
@@ -2598,101 +2641,95 @@ void FUN_80017300(u_long *source)
 
 // WARNING: Globals starting with '_' overlap smaller symbols at the same address
 
-void playMovie(int param_1)
+void playMovie(int index)
 
 {
   bool bVar1;
-  CdlFILE *pCVar2;
-  uint uVar3;
+  CdlFILE *result;
+  uint uVar2;
+  int iVar3;
   int iVar4;
-  int iVar5;
-  int iVar6;
-  char **ppcVar7;
-  DISPENV aDStack176 [6];
-  CdlFILE CStack56;
+  MovieInfo *movie;
+  DISPENV disp;
+  CdlFILE file;
   
-  iVar4 = param_1 * 0x20;
-  ppcVar7 = &PTR_s__MOVRANT_INLAND_STR_1_8003bd68 + param_1 * 8;
-  SsSetSerialAttr('\0','\0','\x01');
-  SsSetSerialVol('\0',DAT_80063234,DAT_80063234);
-  iVar6 = 0;
-  FUN_800186c0(_DAT_80063234);
+  movie = movies + index;
+  SsSetSerialAttr(SS_SERIAL_A,SS_MIX,SS_SON);
+  SsSetSerialVol(SS_SERIAL_A,volume,volume);
+  iVar4 = 0;
+  FUN_800186c0(_volume);
   DAT_80054c80 = 1;
   do {
-    pCVar2 = CdSearchFile(&CStack56,*ppcVar7);
-    bVar1 = iVar6 < 10;
-    if (pCVar2 != (CdlFILE *)0x0) break;
-    iVar6 = iVar6 + 1;
-    printf("file not found: %s \n",*ppcVar7);
-    bVar1 = iVar6 < 10;
+    result = CdSearchFile(&file,movie->fileName);
+    bVar1 = iVar4 < 10;
+    if (result != (CdlFILE *)0x0) break;
+    iVar4 = iVar4 + 1;
+    printf("file not found: %s \n",movie->fileName);
+    bVar1 = iVar4 < 10;
   } while (bVar1);
   if (bVar1) {
-    if (*(int *)(&DAT_8003bd6c + iVar4) == 0) {
-      iVar6 = *(int *)(&DAT_8003bd78 + iVar4);
+    if (movies[index].is24bit == 0) {
+      iVar4 = movies[index].posX;
     }
     else {
-      iVar6 = (*(int *)(&DAT_8003bd78 + iVar4) * 3) / 2;
+      iVar4 = (movies[index].posX * 3) / 2;
     }
-    if (*(int *)(&DAT_8003bd6c + iVar4) == 0) {
-      iVar5 = *(int *)(&DAT_8003bd78 + iVar4);
+    if (movies[index].is24bit == 0) {
+      iVar3 = movies[index].posX;
     }
     else {
-      iVar5 = (*(int *)(&DAT_8003bd78 + iVar4) * 3) / 2;
+      iVar3 = (movies[index].posX * 3) / 2;
     }
-    FUN_800176d4(&DAT_80054dac,iVar6,*(undefined4 *)(&DAT_8003bd7c + iVar4),iVar5,
-                 *(int *)(&DAT_8003bd7c + iVar4) + 0x100,ppcVar7);
-    FUN_8001778c(&CStack56,FUN_80017810,ppcVar7);
-    FUN_80017a38(&DAT_80054dac,ppcVar7);
-    DAT_80054c84 = 0;
+    strSetDefDecEnv(&dec,iVar4,movies[index].posY,iVar3,movies[index].posY + 256,movie);
+    strInit(&file.pos,strCallback,movie);
+    strNextVlc(&dec,movie);
+    Rewind_Switch = 0;
     while( true ) {
-      iVar6 = 2;
-      if (*(int *)(&DAT_8003bd6c + iVar4) != 0) {
-        iVar6 = 3;
+      iVar4 = 2;
+      if (movies[index].is24bit != 0) {
+        iVar4 = 3;
       }
-      DecDCTin((u_long *)0x0,iVar6);
-      DecDCTout(*(u_long **)(&DAT_80054db8 + DAT_80054dc0 * 4),0);
-      FUN_80017a38(&DAT_80054dac,ppcVar7);
-      FUN_80017bd4(&DAT_80054dac,0);
+      DecDCTin((u_long *)0x0,iVar4);
+      DecDCTout((u_long *)(u_short *)0x0,0);
+      strNextVlc(&dec,movie);
+      strSync(&dec,0);
       VSync(0);
-      if (*(int *)(&DAT_8003bd6c + iVar4) == 0) {
-        iVar6 = *(int *)(&DAT_8003bd78 + iVar4);
+      if (movies[index].is24bit == 0) {
+        iVar4 = movies[index].posX;
       }
       else {
-        iVar6 = (*(int *)(&DAT_8003bd78 + iVar4) * 3) / 2;
+        iVar4 = (movies[index].posX * 3) / 2;
       }
-      if (*(int *)(&DAT_8003bd6c + iVar4) == 0) {
-        iVar5 = *(int *)(&DAT_8003bd80 + iVar4);
+      if (movies[index].is24bit == 0) {
+        iVar3 = movies[index].scrWidth;
       }
       else {
-        iVar5 = (*(int *)(&DAT_8003bd80 + iVar4) * 3) / 2;
+        iVar3 = (movies[index].scrWidth * 3) / 2;
       }
-      SetDefDispEnv(aDStack176,*(short *)(&DAT_80054dc4 + (uint)(DAT_80054dd4 == 0) * 8) - iVar6,
-                    (int)*(short *)(&DAT_80054dc6 + (uint)(DAT_80054dd4 == 0) * 8) -
-                    *(int *)(&DAT_8003bd7c + iVar4),iVar5,*(int *)(&DAT_8003bd84 + iVar4));
-      if (*(int *)(&DAT_8003bd6c + iVar4) != 0) {
-        aDStack176[0].isrgb24 = (&DAT_8003bd6c)[iVar4];
-        aDStack176[0].disp.w =
-             (short)((ulonglong)((longlong)((int)aDStack176[0].disp.w << 1) * 0x55555556) >> 0x20) -
-             (short)(((int)aDStack176[0].disp.w << 1) >> 0x1f);
+      SetDefDispEnv(&disp,-iVar4,-movies[index].posY,iVar3,movies[index].scrHeight);
+      if (movies[index].is24bit != 0) {
+        disp.isrgb24 = *(u_char *)&movies[index].is24bit;
+        disp.disp.w = (short)((ulonglong)((longlong)((int)disp.disp.w << 1) * 0x55555556) >> 0x20) -
+                      (short)(((int)disp.disp.w << 1) >> 0x1f);
       }
-      PutDispEnv(aDStack176);
+      PutDispEnv(&disp);
       SetDispMask(1);
-      if (DAT_80054c84 == 1) break;
-      uVar3 = FUN_80015270();
-      iVar6 = FUN_80015314(0);
-      if (((iVar6 != 0) && ((uVar3 & 0x840) != 0)) ||
-         ((iVar6 = FUN_80015314(1), iVar6 != 0 && ((uVar3 & 0x8400000) != 0)))) break;
+      if (Rewind_Switch == 1) break;
+      uVar2 = FUN_80015270();
+      iVar4 = FUN_80015314(0);
+      if (((iVar4 != 0) && ((uVar2 & 0x840) != 0)) ||
+         ((iVar4 = FUN_80015314(1), iVar4 != 0 && ((uVar2 & 0x8400000) != 0)))) break;
     }
-    SsSetSerialVol('\0',0,0);
+    SsSetSerialVol(SS_SERIAL_A,0,0);
     DecDCToutCallback((func *)0x0);
-    FUN_80022a5c();
+    StUnSetRing();
     CdControlB('\t',(u_char *)0x0,(u_char *)0x0);
     DAT_80054cdc = 0;
     DAT_80054ce0 = FUN_80015270();
     _DAT_80054d7c = DAT_80054ce0;
   }
   else {
-    SsSetSerialVol('\0',0,0);
+    SsSetSerialVol(SS_SERIAL_A,0,0);
     ResetGraph(3);
     StopCallback();
   }
@@ -2701,57 +2738,55 @@ void playMovie(int param_1)
 
 
 
-void FUN_800176d4(int *param_1,undefined2 param_2,undefined2 param_3,undefined2 param_4,
-                 undefined2 param_5,int param_6)
+void strSetDefDecEnv(DECENV *dec,int x0,int y0,int x1,int y1,MovieInfo *movie)
 
 {
-  int iVar1;
-  undefined2 uVar2;
+  u_long *puVar1;
+  short sVar2;
   
-  iVar1 = DAT_80054d0c;
-  if (DAT_80054c68 == 1) {
-    param_1[2] = 0;
-    param_1[5] = 0;
-    param_1[10] = 0;
-    param_1[0xd] = 0;
-    DAT_80054c68 = 0;
-    param_1[1] = iVar1 + 0x28000;
-    *param_1 = iVar1;
-    param_1[3] = iVar1 + 0x50000;
-    param_1[4] = iVar1 + 0x57800;
+  puVar1 = DAT_80054d0c;
+  if (isFirst == 1) {
+    dec->vlcid = 0;
+    dec->imgid = 0;
+    dec->rectid = 0;
+    dec->isdone = 0;
+    isFirst = 0;
+    dec->vlcbuf[1] = puVar1 + 0xa000;
+    dec->vlcbuf[0] = puVar1;
+    dec->imgbuf[0] = (u_short *)(puVar1 + 0x14000);
+    dec->imgbuf[1] = (u_short *)(puVar1 + 0x15e00);
   }
-  *(undefined2 *)(param_1 + 6) = param_2;
-  *(undefined2 *)((int)param_1 + 0x1a) = param_3;
-  *(undefined2 *)(param_1 + 8) = param_4;
-  *(undefined2 *)((int)param_1 + 0x22) = param_5;
-  uVar2 = 0x10;
-  if (*(int *)(param_6 + 4) != 0) {
-    uVar2 = 0x18;
+  dec->rect[0].x = (short)x0;
+  dec->rect[0].y = (short)y0;
+  dec->rect[1].x = (short)x1;
+  dec->rect[1].y = (short)y1;
+  sVar2 = 16;
+  if (movie->is24bit != 0) {
+    sVar2 = 24;
   }
-  *(undefined2 *)(param_1 + 0xc) = uVar2;
-  param_1[0xe] = *(int *)(param_6 + 4);
-  if (param_1[10] == 0) {
-    *(undefined2 *)(param_1 + 0xb) = param_2;
-    *(undefined2 *)((int)param_1 + 0x2e) = param_3;
+  (dec->slice).w = sVar2;
+  dec->is24bit = movie->is24bit;
+  if (dec->rectid == 0) {
+    (dec->slice).x = (short)x0;
+    (dec->slice).y = (short)y0;
   }
   else {
-    *(undefined2 *)(param_1 + 0xb) = param_4;
-    *(undefined2 *)((int)param_1 + 0x2e) = param_5;
+    (dec->slice).x = (short)x1;
+    (dec->slice).y = (short)y1;
   }
   return;
 }
 
 
 
-void FUN_8001778c(undefined4 param_1,func *param_2,int param_3)
+void strInit(CdlLOC *loc,func *callback,MovieInfo *movie)
 
 {
   DecDCTReset(0);
-  DecDCToutCallback(param_2);
-  StSetRing((u_long *)(DAT_80054d0c + 0x5f000),0x20);
-  StSetStream(*(u_long *)(param_3 + 4),*(u_long *)(param_3 + 8),0xffffffff,(func1 *)0x0,(func2 *)0x0
-             );
-  FUN_80017c98(param_1);
+  DecDCToutCallback(callback);
+  StSetRing((u_long *)(DAT_80054d0c + 0x5f000),RING_SIZE);
+  StSetStream(movie->is24bit,movie->startFrame,0xffffffff,(func1 *)0x0,(func2 *)0x0);
+  strKickCD(loc);
   return;
 }
 
@@ -2761,153 +2796,146 @@ void FUN_8001778c(undefined4 param_1,func *param_2,int param_3)
 // WARNING: Removing unreachable block (ram,0x8001783c)
 // WARNING: Removing unreachable block (ram,0x800178d4)
 // WARNING: Removing unreachable block (ram,0x800178dc)
+// WARNING: Removing unreachable block (ram,0x80017970)
 
-void FUN_80017810(void)
+void strCallback(void)
 
 {
-  int iVar1;
-  uint local_18;
+  undefined4 local_18;
   undefined4 local_14;
   
-  iVar1 = DAT_80054dc0;
-  local_18 = DAT_80054dd8;
-  local_14 = 0;
-  DAT_80054dc0 = (uint)(DAT_80054dc0 == 0);
+                    // WARNING: Read-only address (ram,0x80054dd4) is written
+                    // WARNING: Read-only address (ram,0x80054dda) is written
+                    // WARNING: Read-only address (ram,0x80054de0) is written
+                    // WARNING: Read-only address (ram,0x80054dc0) is written
   if (DAT_80054c80 != 0) {
     trap(0x1c00);
-    if ((int)*(short *)(&DAT_80054dc8 + DAT_80054dd4 * 8) % 0 != 0) {
-      DAT_80054c80 = 0;
-      DAT_80054dd8 = DAT_80054dd8 & 0xffff0000 |
-                     (uint)(ushort)((short)DAT_80054dd8 +
-                                   (short)((int)*(short *)(&DAT_80054dc8 + DAT_80054dd4 * 8) % 0));
-    }
   }
-  if ((int)(short)DAT_80054dd8 <
-      (int)*(short *)(&DAT_80054dc4 + DAT_80054dd4 * 8) +
-      (int)*(short *)(&DAT_80054dc8 + DAT_80054dd4 * 8)) {
-    DecDCTout(*(u_long **)(&DAT_80054db8 + DAT_80054dc0 * 4),0);
-  }
-  else {
-    DAT_80054dd4 = (uint)(DAT_80054dd4 == 0);
-    DAT_80054de0 = 1;
-    DAT_80054dd8 = *(uint *)(&DAT_80054dc4 + DAT_80054dd4 * 8);
-    DAT_80054c80 = 1;
-  }
-  LoadImage((RECT *)&local_18,*(u_long **)(&DAT_80054db8 + iVar1 * 4));
+  local_14 = 0;
+  local_18 = 0;
+  dec.isdone = 1;
+  dec.slice.y = 0;
+  dec.slice.x = 0;
+  dec.rectid = 1;
+  dec.imgid = 1;
+                    // WARNING: Read-only address (ram,0x80054dd4) is written
+                    // WARNING: Read-only address (ram,0x80054de0) is written
+                    // WARNING: Read-only address (ram,0x80054dd8) is written
+                    // WARNING: Read-only address (ram,0x80054dda) is written
+  DAT_80054c80 = 1;
+  LoadImage((RECT *)&local_18,(u_long *)(u_short *)0x0);
   return;
 }
 
 
 
-void FUN_80017a38(int param_1,undefined4 param_2)
+void strNextVlc(DECENV *dec,MovieInfo *movie)
 
 {
-  u_long *bs;
-  uint uVar1;
-  int iVar2;
+  u_long *next;
+  uint vlcid;
+  int cnt;
   
-  iVar2 = 0x800000;
+  cnt = WAIT_TIME;
   do {
-    bs = (u_long *)FUN_80017ad0(param_1,param_2);
-    iVar2 = iVar2 + -1;
-    if (bs != (u_long *)0x0) {
-      uVar1 = (uint)(*(int *)(param_1 + 8) == 0);
-      *(uint *)(param_1 + 8) = uVar1;
-      DecDCTvlc(bs,*(u_long **)(uVar1 * 4 + param_1));
-      StFreeRing(bs);
+    next = strNext(dec,movie);
+    cnt = cnt + -1;
+    if (next != (u_long *)0x0) {
+      vlcid = (uint)(dec->vlcid == 0);
+      dec->vlcid = vlcid;
+      DecDCTvlc(next,dec->vlcbuf[vlcid]);
+      StFreeRing(next);
       return;
     }
-  } while (iVar2 != 0);
+  } while (cnt != 0);
   return;
 }
 
 
 
-undefined4 FUN_80017ad0(int param_1,int param_2)
+u_long * strNext(DECENV *dec,MovieInfo *movie)
 
 {
-  u_long uVar1;
-  int iVar2;
-  u_long *local_18;
-  u_long *local_14;
+  u_long next;
+  int cnt;
+  u_long *addr;
+  StHEADER *sector;
   
-  iVar2 = 0x800000;
+  cnt = MOVIE_WAIT;
   do {
-    uVar1 = StGetNext(&local_18,&local_14);
-    iVar2 = iVar2 + -1;
-    if (uVar1 == 0) {
-      if (*(uint *)(param_2 + 0xc) <= local_14[2]) {
-        DAT_80054c84 = 1;
+    next = StGetNext(&addr,(u_long **)&sector);
+    cnt = cnt + -1;
+    if (next == 0) {
+      if ((uint)movie->endFrame <= sector->frameCount) {
+        Rewind_Switch = 1;
       }
-      if ((DAT_80054c6c != *(ushort *)(local_14 + 4)) ||
-         (DAT_80054c70 != *(ushort *)((int)local_14 + 0x12))) {
-        DAT_80054c70 = (uint)*(ushort *)((int)local_14 + 0x12);
-        DAT_80054c6c = (uint)*(ushort *)(local_14 + 4);
+      if ((strWidth != sector->width) || (strHeight != sector->height)) {
+        strHeight = (uint)sector->height;
+        strWidth = (uint)sector->width;
       }
-      if (*(int *)(param_2 + 4) == 0) {
+      if (movie->is24bit == 0) {
       }
       else {
-        DAT_80054c6c._0_2_ = (undefined2)(DAT_80054c6c * 3 - ((int)(DAT_80054c6c * 3) >> 0x1f) >> 1)
-        ;
+        strWidth._0_2_ = (short)(strWidth * 3 - ((int)(strWidth * 3) >> 0x1f) >> 1);
       }
-      *(undefined2 *)(param_1 + 0x24) = (undefined2)DAT_80054c6c;
-      *(undefined2 *)(param_1 + 0x1c) = (undefined2)DAT_80054c6c;
-      *(undefined2 *)(param_1 + 0x26) = (undefined2)DAT_80054c70;
-      *(undefined2 *)(param_1 + 0x1e) = (undefined2)DAT_80054c70;
-      *(undefined2 *)(param_1 + 0x32) = (undefined2)DAT_80054c70;
-      return local_18;
+      dec->rect[1].w = (short)strWidth;
+      dec->rect[0].w = (short)strWidth;
+      dec->rect[1].h = (short)strHeight;
+      dec->rect[0].h = (short)strHeight;
+      (dec->slice).h = (short)strHeight;
+      return addr;
     }
-  } while (iVar2 != 0);
-  return 0;
+  } while (cnt != 0);
+  return (u_long *)0;
 }
 
 
 
-void FUN_80017bd4(int param_1)
+void strSync(DECENV *dec,int mode)
 
 {
-  uint uVar1;
-  int iVar2;
-  int local_18;
+  uint rectid;
+  int isdone;
+  int cnt;
   
-  iVar2 = *(int *)(param_1 + 0x34);
-  local_18 = 0x800000;
-  while (iVar2 == 0) {
-    local_18 = local_18 + -1;
-    if (local_18 == 0) {
+  isdone = dec->isdone;
+  cnt = WAIT_TIME;
+  while (isdone == 0) {
+    cnt = cnt + -1;
+    if (cnt == 0) {
       printf("time out in decoding !\n");
-      *(undefined4 *)(param_1 + 0x34) = 1;
-      uVar1 = (uint)(*(int *)(param_1 + 0x28) == 0);
-      *(uint *)(param_1 + 0x28) = uVar1;
-      *(undefined2 *)(param_1 + 0x2c) = *(undefined2 *)(param_1 + uVar1 * 8 + 0x18);
-      *(undefined2 *)(param_1 + 0x2e) =
-           *(undefined2 *)(param_1 + *(int *)(param_1 + 0x28) * 8 + 0x1a);
+      dec->isdone = 1;
+      rectid = (uint)(dec->rectid == 0);
+      dec->rectid = rectid;
+      isdone = dec->rectid;
+      (dec->slice).x = dec->rect[rectid].x;
+      (dec->slice).y = dec->rect[isdone].y;
     }
-    iVar2 = *(int *)(param_1 + 0x34);
+    isdone = dec->isdone;
   }
-  *(undefined4 *)(param_1 + 0x34) = 0;
+  dec->isdone = 0;
   return;
 }
 
 
 
-void FUN_80017c98(u_char *param_1)
+void strKickCD(CdlLOC *loc)
 
 {
-  int iVar1;
-  u_char local_10 [8];
+  int result;
+  u_char param;
   
-  local_10[0] = 0x80;
+  param = CdlModeSpeed;
   do {
     do {
-      iVar1 = CdControl('\x02',param_1,(u_char *)0x0);
-    } while (iVar1 == 0);
+      result = CdControl(CdlSetloc,&loc->minute,(u_char *)0x0);
+    } while (result == 0);
     do {
-      iVar1 = CdControl('\x0e',local_10,(u_char *)0x0);
-    } while (iVar1 == 0);
+      result = CdControl(CdlSetmode,&param,(u_char *)0x0);
+    } while (result == 0);
     VSync(3);
-    iVar1 = CdRead2(0x1c0);
-  } while (iVar1 == 0);
+    result = CdRead2(0x1c0);
+  } while (result == 0);
   return;
 }
 
@@ -2940,8 +2968,8 @@ void FUN_80017d0c(uchar *param_1,int param_2)
     if (uVar1 == DAT_80054d38) {
       SsVabTransCompleted(1);
       SsSetSerialAttr('\0','\0','\x01');
-      SsSetSerialVol('\0',DAT_80063234,DAT_80063234);
-      FUN_800186c0(_DAT_80063234);
+      SsSetSerialVol('\0',volume,volume);
+      FUN_800186c0(_volume);
     }
     else {
       printf("SsVabTransBody : failed!\n");
@@ -3044,9 +3072,8 @@ void FUN_80018188(short param_1,short param_2,int param_3)
 
 {
   SsUtKeyOffV(param_2);
-  SsUtKeyOnV(param_2,DAT_80054d38,param_1,0,0x3c,0,
-             (short)((uint)(param_3 * _DAT_80063234 * 0x80) >> 0x10),
-             (short)((uint)(param_3 * _DAT_80063234 * 0x80) >> 0x10));
+  SsUtKeyOnV(param_2,DAT_80054d38,param_1,0,0x3c,0,(short)((uint)(param_3 * _volume * 0x80) >> 0x10)
+             ,(short)((uint)(param_3 * _volume * 0x80) >> 0x10));
   return;
 }
 
@@ -3062,12 +3089,12 @@ void FUN_800182bc(void)
   iVar2 = 0;
   iVar1 = 0;
   do {
-    voice = (short)((uint)iVar1 >> 0x10);
+    voice = (short)((uint)iVar1 >> 16);
     SsUtSetVVol(voice,0,0);
     SsUtKeyOffV(voice);
     iVar2 = iVar2 + 1;
     iVar1 = iVar2 * 0x10000;
-  } while (iVar2 < 0x18);
+  } while (iVar2 < 24);
   return;
 }
 
@@ -3094,7 +3121,7 @@ void FUN_80018318(int param_1)
   CdControlB('\x0e',&DAT_80054ce4,(u_char *)0x0);
   CdControlB('\x03',&DAT_80063868 + DAT_80063238 * 4,(u_char *)0x0);
   SsSetSerialAttr('\0','\0','\x01');
-  SsSetSerialVol('\0',DAT_80063234,DAT_80063234);
+  SsSetSerialVol('\0',volume,volume);
   DAT_80054c88 = 0;
   DAT_80054d9c = 0;
   return;
@@ -3188,7 +3215,7 @@ void FUN_800185a0(void)
   }
   uVar1 = 0;
   if (DAT_80063238 == DAT_80054c88) {
-    uVar1 = _DAT_80063234;
+    uVar1 = _volume;
   }
   FUN_800186c0(uVar1);
   return;
@@ -3196,20 +3223,20 @@ void FUN_800185a0(void)
 
 
 
-void FUN_800186c0(int param_1)
+void FUN_800186c0(int volume)
 
 {
   if (DAT_80063250 == 0) {
-    DAT_80054d62 = (undefined)param_1;
-    DAT_80054d63 = 0;
+    aud.val2 = (u_char)volume;
+    aud.val3 = 0;
   }
   else {
-    DAT_80054d62 = (undefined)(param_1 / 2);
-    DAT_80054d63 = DAT_80054d62;
+    aud.val2 = (u_char)(volume / 2);
+    aud.val3 = aud.val2;
   }
-  DAT_80054d60 = DAT_80054d62;
-  DAT_80054d61 = DAT_80054d63;
-  CdMix((CdlATV *)&DAT_80054d60);
+  aud.val0 = aud.val2;
+  aud.val1 = aud.val3;
+  CdMix(&aud);
   return;
 }
 
@@ -3329,7 +3356,7 @@ void SsEnd(void)
 
 {
   if ((DAT_8003cc38 == 0) && (DAT_8003cc45 = 0, DAT_8003cc46 != '\x7f')) {
-    FUN_80039120();
+    EnterCriticalSection();
     if (DAT_8003cc44 != '\0') {
       VSyncCallback((f *)0x0);
       DAT_8003cc44 = 0;
@@ -3343,7 +3370,7 @@ void SsEnd(void)
       return;
     }
     InterruptCallback(6,0);
-    FUN_80039130();
+    ExitCriticalSection();
     DAT_8003cc46 = '\x7f';
   }
   return;
@@ -3354,7 +3381,7 @@ void SsEnd(void)
 void SSEND_OBJ_A0(void)
 
 {
-  FUN_80039130();
+  ExitCriticalSection();
   DAT_8003cc46 = 0x7f;
   return;
 }
@@ -3435,11 +3462,11 @@ void SpuStart(void)
 {
   if (DAT_8003c898 == 0) {
     DAT_8003c898 = 1;
-    FUN_80039120();
+    EnterCriticalSection();
     _SpuDataCallback(_spu_FiDMA);
     DAT_8003c430 = OpenEvent(0xf0000009,0x20,0x2000,0);
     EnableEvent();
-    FUN_80039130();
+    ExitCriticalSection();
   }
   return;
 }
@@ -6139,7 +6166,7 @@ void _SsStart(void)
   DAT_8003cc45 = '\0';
   DAT_8003cc40 = 0;
   if (DAT_8003cc34 == 2) {
-    FUN_80039120();
+    EnterCriticalSection();
     ResetRCnt(0xf2000002);
     SetRCnt(0xf2000002,0x44e8,0x1000);
     if (DAT_8003cc46 != '\0') {
@@ -6148,7 +6175,7 @@ void _SsStart(void)
         pcVar3 = SsSeqCalledTbyT;
       }
       InterruptCallback(DAT_8003cc46,pcVar3);
-      FUN_80039130();
+      ExitCriticalSection();
       return;
     }
     DAT_8003cc40 = InterruptCallback(0,0);
@@ -6205,12 +6232,12 @@ void SSSTART_OBJ_DC(void)
       trap(0x1c00);
     }
     if (DAT_8003cc44 != '\0') {
-      FUN_80039120();
+      EnterCriticalSection();
       VSyncCallback(SsSeqCalledTbyT);
       SSSTART_OBJ_244();
       return;
     }
-    FUN_80039120();
+    EnterCriticalSection();
     ResetRCnt();
     SetRCnt();
     if (DAT_8003cc46 == '\0') {
@@ -6223,7 +6250,7 @@ void SSSTART_OBJ_DC(void)
       pcVar1 = SsSeqCalledTbyT;
     }
     InterruptCallback(DAT_8003cc46,pcVar1);
-    FUN_80039130();
+    ExitCriticalSection();
   }
   return;
 }
@@ -6236,12 +6263,12 @@ void SSSTART_OBJ_180(void)
   code *pcVar1;
   
   if (DAT_8003cc44 != '\0') {
-    FUN_80039120();
+    EnterCriticalSection();
     VSyncCallback(SsSeqCalledTbyT);
     SSSTART_OBJ_244();
     return;
   }
-  FUN_80039120();
+  EnterCriticalSection();
   ResetRCnt();
   SetRCnt();
   if (DAT_8003cc46 == '\0') {
@@ -6254,7 +6281,7 @@ void SSSTART_OBJ_180(void)
     pcVar1 = SsSeqCalledTbyT;
   }
   InterruptCallback(DAT_8003cc46,pcVar1);
-  FUN_80039130();
+  ExitCriticalSection();
   return;
 }
 
@@ -6266,12 +6293,12 @@ void SSSTART_OBJ_188(void)
   code *pcVar1;
   
   if (DAT_8003cc44 != '\0') {
-    FUN_80039120();
+    EnterCriticalSection();
     VSyncCallback(SsSeqCalledTbyT);
     SSSTART_OBJ_244();
     return;
   }
-  FUN_80039120();
+  EnterCriticalSection();
   ResetRCnt();
   SetRCnt();
   if (DAT_8003cc46 == '\0') {
@@ -6284,7 +6311,7 @@ void SSSTART_OBJ_188(void)
     pcVar1 = SsSeqCalledTbyT;
   }
   InterruptCallback(DAT_8003cc46,pcVar1);
-  FUN_80039130();
+  ExitCriticalSection();
   return;
 }
 
@@ -6294,7 +6321,7 @@ void SSSTART_OBJ_23C(void)
 
 {
   InterruptCallback();
-  FUN_80039130();
+  ExitCriticalSection();
   return;
 }
 
@@ -6303,7 +6330,7 @@ void SSSTART_OBJ_23C(void)
 void SSSTART_OBJ_244(void)
 
 {
-  FUN_80039130();
+  ExitCriticalSection();
   return;
 }
 
@@ -10955,10 +10982,10 @@ void DMACallback(void)
 int VSyncCallback(f *f)
 
 {
-  int iVar1;
+  int prev_cb;
   
-  iVar1 = (*DAT_8003de70)(0,f);
-  return iVar1;
+  prev_cb = (*DAT_8003de70)(0,f);
+  return prev_cb;
 }
 
 
@@ -11053,7 +11080,7 @@ undefined2 * startIntr(void)
     DAT_8003de60 = startIntrDMA();
     CdRemove();
     puVar1 = &DAT_8003cdf4;
-    FUN_80039130();
+    ExitCriticalSection();
   }
   return puVar1;
 }
@@ -11199,7 +11226,7 @@ undefined2 * stopIntr(void)
   
   puVar1 = (undefined2 *)0x0;
   if (DAT_8003cdf4 != 0) {
-    FUN_80039120();
+    EnterCriticalSection();
     DAT_8003ce26 = I_MASK;
     DAT_8003ce28 = DMA_DPCR;
     I_MASK = 0;
@@ -11224,7 +11251,7 @@ undefined4 restartIntr(void)
     DAT_8003cdf4 = 1;
     I_MASK = DAT_8003ce26;
     DMA_DPCR = DAT_8003ce28;
-    FUN_80039130();
+    ExitCriticalSection();
     uVar1 = INTR_OBJ_6D0();
     return uVar1;
   }
@@ -13380,7 +13407,7 @@ void BIOS_OBJ_161C(void)
 
 
 
-CdlFILE * CdSearchFile(CdlFILE *_30,char *name)
+CdlFILE * CdSearchFile(CdlFILE *fp,char *name)
 
 {
   bool bVar1;
@@ -13478,13 +13505,13 @@ ISO9660_OBJ_110:
             CVar7 = pCVar11[1];
             CVar8 = pCVar11[2];
             CVar9 = pCVar11[3];
-            _30->pos = *pCVar11;
-            *(CdlLOC *)&_30->size = CVar7;
-            *(CdlLOC *)_30->name = CVar8;
-            *(CdlLOC *)(_30->name + 4) = CVar9;
+            fp->pos = *pCVar11;
+            *(CdlLOC *)&fp->size = CVar7;
+            *(CdlLOC *)fp->name = CVar8;
+            *(CdlLOC *)(fp->name + 4) = CVar9;
             CVar7 = pCVar11[5];
-            *(CdlLOC *)(_30->name + 8) = pCVar11[4];
-            *(CdlLOC *)(_30->name + 0xc) = CVar7;
+            *(CdlLOC *)(fp->name + 8) = pCVar11[4];
+            *(CdlLOC *)(fp->name + 0xc) = CVar7;
             pCVar4 = (CdlFILE *)ISO9660_OBJ_2B8();
             return pCVar4;
           }
@@ -14303,17 +14330,15 @@ void StClearRing(void)
 
 
 
-// Possible C_003.OBJ/StUnSetRing
-
-void FUN_80022a5c(void)
+void StUnSetRing(void)
 
 {
-  FUN_80039120();
+  EnterCriticalSection();
   CdDataCallback((func *)0x0);
   CdReadyCallback((CdlCB)0x0);
   CDROM_REG0 = 0;
   CDROM_REG3 = 0;
-  FUN_80039130();
+  ExitCriticalSection();
   return;
 }
 
@@ -16996,7 +17021,7 @@ void _patch_gte(void)
   undefined4 unaff_retaddr;
   
   DAT_80054c9c = unaff_retaddr;
-  FUN_80039120();
+  EnterCriticalSection();
   iVar1 = (*(code *)&SUB_000000b0)();
   puVar4 = &PATCHGTE_OBJ_68;
   puVar2 = *(undefined4 **)(iVar1 + 0x18);
@@ -17007,7 +17032,7 @@ void _patch_gte(void)
     puVar2 = puVar2 + 1;
   } while (puVar4 != (undefined4 *)GsGetTimInfo);
   FlushCache();
-  FUN_80039130();
+  ExitCriticalSection();
   return;
 }
 
@@ -34297,10 +34322,10 @@ void _card_load(void)
 void FUN_800383d0(void)
 
 {
-  FUN_80039120();
+  EnterCriticalSection();
   StartCard();
   ChangeClearPad(0);
-  FUN_80039130();
+  ExitCriticalSection();
   return;
 }
 
@@ -34385,7 +34410,7 @@ void _patch_card(void)
   undefined4 unaff_retaddr;
   
   DAT_80054cac = unaff_retaddr;
-  FUN_80039120();
+  EnterCriticalSection();
   iVar1 = (*(code *)&SUB_000000b0)();
   puVar4 = (undefined4 *)&PATCH_OBJ_0;
   puVar2 = (undefined4 *)
@@ -34432,7 +34457,7 @@ void _patch_card2(void)
   undefined4 unaff_retaddr;
   
   DAT_80054cac = unaff_retaddr;
-  FUN_80039120();
+  EnterCriticalSection();
   iVar1 = (*(code *)&SUB_000000b0)();
   iVar1 = *(int *)(iVar1 + 0x16c);
   puVar3 = &PATCH_OBJ_E0;
@@ -34461,7 +34486,7 @@ void FUN_80038608(void)
   undefined4 unaff_retaddr;
   
   DAT_80054cbc = unaff_retaddr;
-  FUN_80039120();
+  EnterCriticalSection();
   iVar1 = (*(code *)&SUB_000000b0)();
   puVar3 = &DAT_80038670;
   iVar1 = *(int *)(iVar1 + 0x18);
@@ -34472,7 +34497,7 @@ void FUN_80038608(void)
     iVar1 = iVar1 + 4;
   } while (puVar3 != (undefined4 *)&UNK_8003867c);
   FlushCache();
-  FUN_80039130();
+  ExitCriticalSection();
   return;
 }
 
@@ -38777,9 +38802,7 @@ void SetCustomExitFromException(void)
 
 
 
-// Possible A36.OBJ/EnterCriticalSection
-
-void FUN_80039120(void)
+void EnterCriticalSection(void)
 
 {
   syscall(0);
@@ -38788,9 +38811,7 @@ void FUN_80039120(void)
 
 
 
-// Possible A37.OBJ/ExitCriticalSection
-
-void FUN_80039130(void)
+void ExitCriticalSection(void)
 
 {
   syscall(0);
@@ -39154,7 +39175,7 @@ void _patch_pad(void)
   undefined4 unaff_retaddr;
   
   DAT_80054ccc = unaff_retaddr;
-  FUN_80039120();
+  EnterCriticalSection();
   iVar1 = (*(code *)&SUB_000000b0)();
   iVar1 = *(int *)(iVar1 + 0x16c);
   iVar2 = 0xb;
